@@ -29,10 +29,12 @@ func buildURLFromJSON(label, jsonStr string) (string, error) {
 		toLon := data["DestLon"].(float64)
 		mode := url.QueryEscape(data["Mode"].(string))
 		path := "distancematrix"
+		version:= "v3"
 		if label == "distanceMatrixDetails" {
 			path = "distancematrixdetails"
+			version = "v1"
 		}
-		return fmt.Sprintf("%s/routemap/api/v1/routes/%s?fromLat=%f&fromLong=%f&toLat=%f&toLong=%f&mode=%s", baseURL, path, fromLat, fromLon, toLat, toLon, mode), nil
+		return fmt.Sprintf("%s/routemap/api/%s/routes/%s?fromLat=%f&fromLong=%f&toLat=%f&toLong=%f&mode=%s", baseURL,version, path, fromLat, fromLon, toLat, toLon, mode), nil
 	case "search":
 		query := url.QueryEscape(data["Query"].(string))
 		return fmt.Sprintf("%s/geomap/api/v1/search?q=%s", baseURL, query), nil
