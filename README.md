@@ -20,7 +20,7 @@ Map Nests
 
 
 
-A secure and efficient Go SDK for the **Mapnests Platform**, enabling powerful geospatial capabilities such as **Search (Geocoding)**, **Reverse (Reverse Geocoding)**, and **Distance Matrix**.
+A secure and efficient Go SDK for the **Mapnests Platform**, enabling powerful geospatial capabilities such as **Search (Geocoding)**, **Reverse (Reverse Geocoding)**, **Distance Matrix**, **Autocomplete** and **Autocomplet Without Zone**.
 
 ---
 
@@ -36,6 +36,8 @@ A secure and efficient Go SDK for the **Mapnests Platform**, enabling powerful g
   * [Multi Source Route Summary](#multi-source-route-summary)
   * [Search (Geocoding)](#search-geocoding)
   * [Reverse Geocoding](#reverse-geocoding)
+  * [Autocomplete](#autocomplete)
+  * [Autocomplete Without Zone](#autocomplete-without-zone)
 * [License](#license)
 * [Contact](#contact)
 
@@ -70,7 +72,11 @@ import (
 )
 
 func main() {
+  //Without custom timeout
 	client := mapnests.NewClient("YOUR_API_KEY", "com.your.app")
+
+  //With Custom timeout in millisecond 
+  clientWithTimeoutMs := mapnests.NewClient("YOUR_API_KEY", "com.your.app", "timeout in millisecond")
 
 	res, err := client.Search(context.Background(), mapnests.SearchRequest{
 		Query: "Dhaka",
@@ -344,6 +350,98 @@ client.Reverse(ctx, mapnests.ReverseRequest{
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+### Autocomplete
+
+<a name="autocomplete"></a>
+
+> Auto Complete suggests relevant places, streets, and landmarks as you type a partial search query.
+
+**Example Input:**
+
+```go
+//Without optional value
+autocompleteRes, err := mapClient.Autocomplete(ctx, mapnests.AutoCompleteRequest{
+		Query: "Gulshan Road"
+	})
+	
+//With optional value (Latitude, Longitude, Limit)
+autocompleteRes, err := mapClient.Autocomplete(ctx, mapnests.AutoCompleteRequest{
+		Query: "Gulshan Road",
+		Lat: &lat,
+		Lon: &lon,
+		Limit: &limit,	
+	})
+```
+
+**Example Output:**
+
+```json
+{
+  "data": [
+    {
+      "placeId": "196b0e140922f9e30af61ac4ec2c04382ba031220fe63cceed60848a476b0c6b",
+      "address": "AB Bank PLC. ATM, House#155, Gulshan North Avenue, Gulshan2, Gulshan, Dhaka-1212",
+      "types": ["amenity", "bank", "amenity"]
+    },
+    {
+      "placeId": "9ab29e22629ec9540a42d0242bef0f79f264d21ed1aeb2a3fc65aaf7c62597b4",
+      "address": "Gulshan Police Checkpost, Road-92, Gulshan 2, Gulshan, Dhaka-1212",
+      "types": ["military", "checkpoint", "military"]
+    }
+  ],
+  "message": "Success",
+  "status": true
+}
+```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+### Autocomplete without Zone
+
+<a name="autocomplete-without-zone"></a>
+
+> Auto Complete suggests relevant places, streets, and landmarks as you type a partial search query.
+
+**Example Input:**
+
+```go
+//Without optional value
+autocompleteWithOutZoneRes, err := mapClient.AutocompleteWithoutZone(ctx, mapnests.AutoCompleteRequest{
+		Query: "Gulshan Road"
+	})
+	
+//With optional value (Latitude, Longitude, Limit)
+autocompleteRes, err := mapClient.AutocompleteWithoutZone(ctx, mapnests.AutoCompleteRequest{
+		Query: "Gulshan Road",
+		Lat: &lat,
+		Lon: &lon,
+		Limit: &limit,	
+	})
+```
+
+**Example Output:**
+
+```json
+{
+  "data": [
+    {
+      "placeId": "196b0e140922f9e30af61ac4ec2c04382ba031220fe63cceed60848a476b0c6b",
+      "address": "AB Bank PLC. ATM, House#155, Gulshan North Avenue, Gulshan2, Gulshan, Dhaka-1212",
+      "types": ["amenity", "bank", "amenity"]
+    },
+    {
+      "placeId": "9ab29e22629ec9540a42d0242bef0f79f264d21ed1aeb2a3fc65aaf7c62597b4",
+      "address": "Gulshan Police Checkpost, Road-92, Gulshan 2, Gulshan, Dhaka-1212",
+      "types": ["military", "checkpoint", "military"]
+    }
+  ],
+  "message": "Success",
+  "status": true
+}
+```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 ---
 
 

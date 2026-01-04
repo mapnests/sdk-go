@@ -47,6 +47,19 @@ type Address struct {
 }
 
 func (s *client) Reverse(ctx context.Context, request ReverseRequest) (*ReverseResponse, error) {
+	
+	if isUnderMaintenance("Reverse") {
+        return &ReverseResponse{
+            Message: "Reverse service is under maintenance",
+            Status:  false,
+        }, nil
+    }
+
+	err := ValidateLatLon(request.Lat,request.Lon)
+    if err != nil {
+        return nil,err
+    }
+
 	fmt.Println("📍 Reverse request:", request)
 
 	body, err := s.request("reverse", request)
@@ -60,4 +73,5 @@ func (s *client) Reverse(ctx context.Context, request ReverseRequest) (*ReverseR
 	}
 
 	return &response, nil
+
 }

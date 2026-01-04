@@ -5,7 +5,7 @@ import (
 )
 
 func (s *client) request(label string, request interface{}) ([]byte, error) {
-	status, resp, errMsg, err := callSecureRequest(label, s.apiKey, s.packageName, request)
+	status, resp, errMsg, err := callSecureRequest(label, s.apiKey, s.packageName, s.timeoutMs, request)
 	if err != nil {
 		return nil, fmt.Errorf("[%s] native error: %s", label, errMsg)
 	}

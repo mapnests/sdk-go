@@ -85,6 +85,16 @@ type Waypoint struct {
 }
 
 func (s *client) DistanceMatrixDetails(ctx context.Context, request DistanceMatrixDetailsRequest) (*DistanceMatrixDetailsResponse, error) {
+	
+	err := ValidateLatLon(request.OriginLat,request.OriginLon)
+    if err != nil {
+        return nil,err
+    }
+	err = ValidateLatLon(request.DestLat,request.DestLon)
+    if err != nil {
+        return nil,err
+    }
+	
 	fmt.Println("📍 DistanceMatrixDetails request:", request)
 
 	body, err := s.request("distanceMatrixDetails", request)

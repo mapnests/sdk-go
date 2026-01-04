@@ -41,6 +41,17 @@ type MultiSourceRouteSummaryResponse struct {
 }
 
 func (s *client) MultiSourceRouteSummary(ctx context.Context, request MultiSourceRouteSummaryRequest) (*MultiSourceRouteSummaryResponse, error) {
+	
+	for _, src := range request.Sources {
+        if err := ValidateLatLon(src.Lat, src.Lon); err != nil {
+            return nil, err
+        }
+    }
+
+    if err := ValidateLatLon(request.Destination.Lat, request.Destination.Lon); err != nil {
+        return nil, err
+    }
+
 	fmt.Println("📍 MultiSourceRouteSummaryRequest request:", request)
 
 	body, err := s.request("multiSourceRouteSummary", request)

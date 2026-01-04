@@ -26,6 +26,14 @@ type SearchData struct {
 }
 
 func (s *client) Search(ctx context.Context, request SearchRequest) (*SearchResponse, error) {
+	
+    if isUnderMaintenance("Search") {
+        return &SearchResponse{
+            Message: "Search service is under maintenance",
+            Status:  false,
+        }, nil
+    }
+	
 	body, err := s.request("search", request)
 	if err != nil {
 		return nil, err
