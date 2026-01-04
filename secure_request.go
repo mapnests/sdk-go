@@ -21,11 +21,13 @@ var HTTPMethodMap = map[string]string{
 	"distanceMatrixDetails":   http.MethodGet,
 	"pairWiseRouteSummary":    http.MethodPost,
 	"multiSourceRouteSummary": http.MethodPost,
+	"autocomplete":            http.MethodGet,
+	"autocompleteWithoutZone": http.MethodGet,
 }
 
 var token string
 
-func performSecureRequest(label, apiKey, origin, jsonRequest string) SecureResult {
+func performSecureRequest(label string, apiKey string, origin string, timeoutMs int32, jsonRequest string) SecureResult {
 
 	urlStr, err := buildURLFromJSON(label, jsonRequest)
 	if err != nil {
@@ -49,7 +51,7 @@ func performSecureRequest(label, apiKey, origin, jsonRequest string) SecureResul
 		"Content-Type": "application/json",
 	}
 
-	client := &http.Client{Timeout: 30 * time.Second}
+	client := &http.Client{Timeout: time.Duration(timeoutMs) * time.Millisecond}
 	var resp *http.Response
 
 	makeRequest := func() (*http.Response, error) {

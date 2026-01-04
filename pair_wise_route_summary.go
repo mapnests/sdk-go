@@ -33,6 +33,15 @@ type RouteSummaryResponseData struct {
 }
 
 func (s *client) PairWiseRouteSummary(ctx context.Context, request PairWiseRouteSummaryRequest) (*PairWiseRouteSummaryResponse, error) {
+	for _, pair := range request.Pairs {
+		if err := ValidateLatLon(pair.Src.Lat, pair.Src.Lon); err != nil {
+			return nil, err
+		}
+		if err := ValidateLatLon(pair.Dest.Lat, pair.Dest.Lon); err != nil {
+			return nil, err
+		}
+	}
+
 	fmt.Println("📍 PairWiseRouteSummary request:", request)
 
 	body, err := s.request("pairWiseRouteSummary", request)
