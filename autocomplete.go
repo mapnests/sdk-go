@@ -20,7 +20,7 @@ type AutoCompleteResponse struct{
 }
 
 type ResponseData struct{
-	PlaceID string 		`json:"place_id"`
+	PlaceID string 		`json:"placeId"`
 	Address string 		`json:"address"`
 	Types 	[]string 	`json:"types"`
 }
