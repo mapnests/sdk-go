@@ -38,6 +38,7 @@ A secure and efficient Go SDK for the **Mapnests Platform**, enabling powerful g
   * [Reverse Geocoding](#reverse-geocoding)
   * [Autocomplete](#autocomplete)
   * [Autocomplete Without Zone](#autocomplete-without-zone)
+  * [Search By Radius](#search-by-radius)
 * [License](#license)
 * [Contact](#contact)
 
@@ -47,7 +48,7 @@ A secure and efficient Go SDK for the **Mapnests Platform**, enabling powerful g
 
 ```bash
 go get github.com/mapnests/sdk-go
-```
+```-   [Search By Radius](#search-by-radius)
 
 Import into your project:
 
@@ -287,13 +288,13 @@ multiRes, err := mapClient.MultiSourceRouteSummary(ctx, mapnests.MultiSourceRout
 
 <a name="search-geocoding"></a>
 
-> Finds places, streets, and landmarks by text query.
+> Finds places, streets, and landmarks using text-based queries. The search can also be refined by providing latitude and longitude with radius support.
 
 **Example Input:**
 
 ```go
 client.Search(ctx, mapnests.SearchRequest{
-	Query: "Bashundhara Residential Area, Dhaka",
+	Query: "Uttara, Dhaka",
 })
 ```
 
@@ -301,17 +302,44 @@ client.Search(ctx, mapnests.SearchRequest{
 
 ```json
 {
-  "data": [
-	{
-	  "place_id": "123456",
-	  "lat": "23.8156",
-	  "lon": "90.4287",
-	  "display_name": "Bashundhara Residential Area, Dhaka, Bangladesh"
-	}
-  ],
-  "status": true,
-  "message": "success"
+  "data": {
+    "items": [
+      {
+        "placeId": "ebc9a1b56224de67dee16d967424915375dccaa69e9bd120f4f9c905445808c9",
+        "lat": 23.858248,
+        "lon": 90.4015501,
+        "types": [
+          "amenity",
+          "school",
+          "amenity"
+        ],
+        "address": "Scholastica (School) Senior Uttara Campus, Uttara, Dhaka",
+        "name": "Scholastica (School) Senior Uttara Campus, Uttara, Dhaka",
+        "houseNumber": "",
+        "houseName": "",
+        "street": "",
+        "phone": "",
+        "website": "",
+        "country": "Bangladesh",
+        "city": "Dhaka",
+        "thana": "",
+        "division": "",
+        "district": "",
+        "postalCode": "1230",
+        "plusCode": "",
+        "sublocality": "",
+        "localArea": ""
+      }
+    ],
+    "itemsPerPage": 1,
+    "pageNumber": 1,
+    "totalItems": 2996,
+    "totalPages": 2996
+  },
+  "message": "Success",
+  "status": true
 }
+
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -379,14 +407,14 @@ autocompleteRes, err := mapClient.Autocomplete(ctx, mapnests.AutoCompleteRequest
 {
   "data": [
     {
-      "placeId": "196b0e140922f9e30af61ac4ec2c04382ba031220fe63cceed60848a476b0c6b",
-      "address": "AB Bank PLC. ATM, House#155, Gulshan North Avenue, Gulshan2, Gulshan, Dhaka-1212",
-      "types": ["amenity", "bank", "amenity"]
-    },
-    {
-      "placeId": "9ab29e22629ec9540a42d0242bef0f79f264d21ed1aeb2a3fc65aaf7c62597b4",
-      "address": "Gulshan Police Checkpost, Road-92, Gulshan 2, Gulshan, Dhaka-1212",
-      "types": ["military", "checkpoint", "military"]
+      "placeId": "4e7820118661ce107f308dff7648bf0a9d2847b78b720b08c9d39fe3662c4a8c",
+      "name": "Gulshan",
+      "address": "Gulshan, House#76, Palolika, Road-24, Gulshan-1, Gulshan, Dhaka-1212",
+      "types": [
+        "landuse",
+        "residential",
+        "landuse"
+      ]
     }
   ],
   "message": "Success",
@@ -407,13 +435,13 @@ autocompleteRes, err := mapClient.Autocomplete(ctx, mapnests.AutoCompleteRequest
 
 ```go
 //Without optional value
-autocompleteWithOutZoneRes, err := mapClient.AutocompleteWithoutZone(ctx, mapnests.AutoCompleteRequest{
-		Query: "Gulshan Road"
+autocompleteWithoutZoneRes, err := mapClient.AutocompleteWithoutZone(ctx, mapnests.AutoCompleteRequest{
+		Query: "Uttara"
 	})
 	
 //With optional value (Latitude, Longitude, Limit)
-autocompleteRes, err := mapClient.AutocompleteWithoutZone(ctx, mapnests.AutoCompleteRequest{
-		Query: "Gulshan Road",
+autocompleteWithoutZoneRes, err := mapClient.AutocompleteWithoutZone(ctx, mapnests.AutoCompleteRequest{
+		Query: "Uttara",
 		Lat: &lat,
 		Lon: &lon,
 		Limit: &limit,	
@@ -426,25 +454,84 @@ autocompleteRes, err := mapClient.AutocompleteWithoutZone(ctx, mapnests.AutoComp
 {
   "data": [
     {
-      "placeId": "196b0e140922f9e30af61ac4ec2c04382ba031220fe63cceed60848a476b0c6b",
-      "address": "AB Bank PLC. ATM, House#155, Gulshan North Avenue, Gulshan2, Gulshan, Dhaka-1212",
-      "types": ["amenity", "bank", "amenity"]
-    },
-    {
-      "placeId": "9ab29e22629ec9540a42d0242bef0f79f264d21ed1aeb2a3fc65aaf7c62597b4",
-      "address": "Gulshan Police Checkpost, Road-92, Gulshan 2, Gulshan, Dhaka-1212",
-      "types": ["military", "checkpoint", "military"]
+      "placeId": "7d7e8fd275bfd9be9853ada14417d104e824d1c11600599bd326fb858429d83c",
+      "name": "Uttara",
+      "address": "Uttara, House#21, Road 17, Sector 11, Uttara, Dhaka-1230",
+      "types": [
+        "amenity",
+        "restaurant",
+        "amenity"
+      ]
     }
   ],
   "message": "Success",
   "status": true
 }
+
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Search By Radius
+
+<a name="search-by-radius"></a>
+
+> Finds places, streets, and landmarks using text-based queries. All searches are restricted to results within the specified radius, which requires latitude, longitude, and radius parameters.
+
+**Example Input:**
+
+```go
+client.SearchByRadius(ctx, mapnests.SearchByRadiusRequest{
+	Query: "Bashundhara Residential Area, Dhaka",
+	Lat:   23.8156,
+	Lon:   90.4287,
+	Radius: 1000,
+})
+```
+
+**Example Output:**
+
+```json
+{
+  "data": {
+    "items": [
+      {
+        "placeId": "f6e5bf556e2163d89f65d634b6456d28736a6a72dc1c1df933a8b13d0597956a",
+        "lat": 23.714221,
+        "lon": 90.4059638,
+        "types": [ "amenity", "bank", "amenity" ],
+        "address": "Uttara Bank",
+        "name": "Uttara Bank",
+        "houseNumber": "",
+        "houseName": "",
+        "street": "Nawab Yousuf Sarak",
+        "phone": "",
+        "website": "",
+        "country": "Bangladesh",
+        "city": "",
+        "thana": "",
+        "division": "",
+        "district": "",
+        "postalCode": "1100",
+        "plusCode": "",
+        "sublocality": "",
+        "localArea": ""
+      }
+    ],
+    "itemsPerPage": 1,
+    "pageNumber": 1,
+    "totalItems": 12,
+    "totalPages": 12
+  },
+  "message": "Success",
+  "status": true
+}
+
+```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ---
-
-
 
 
 ## License

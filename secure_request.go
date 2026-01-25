@@ -23,6 +23,7 @@ var HTTPMethodMap = map[string]string{
 	"multiSourceRouteSummary": http.MethodPost,
 	"autocomplete":            http.MethodGet,
 	"autocompleteWithoutZone": http.MethodGet,
+	"searchByRadius":          http.MethodGet,
 }
 
 var token string
