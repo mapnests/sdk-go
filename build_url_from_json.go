@@ -22,7 +22,7 @@ func buildURLFromJSON(label, jsonStr string) (string, error) {
 	case "reverse":
 		lat := data["Lat"].(float64)
 		lon := data["Lon"].(float64)
-		return fmt.Sprintf("%s/geomap/api/v1/reverse?lat=%f&lon=%f", baseURL, lat, lon), nil
+		return fmt.Sprintf("%s/geomap/api/v2/reverse?lat=%f&lon=%f", baseURL, lat, lon), nil
 	case "distanceMatrix", "distanceMatrixDetails":
 		fromLat := data["OriginLat"].(float64)
 		fromLon := data["OriginLon"].(float64)

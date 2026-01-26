@@ -18,47 +18,44 @@ type ReverseResponse struct {
 }
 
 type ReverseData struct {
-	PlaceRank   int     `json:"placeRank"`
-	Importance  float64 `json:"importance"`
-	Name        string  `json:"name"`
-	AddressType string  `json:"addresstype"`
-	Lon         string  `json:"lon"`
-	Lat         string  `json:"lat"`
-	Category    string  `json:"category"`
-	Type        string  `json:"type"`
-	DisplayName string  `json:"displayName"`
-	PlaceID     int     `json:"placeid"`
-	Address     Address `json:"address"`
-}
-
-type Address struct {
-	Country       string `json:"country"`
-	CountryCode   string `json:"countryCode"`
-	City          string `json:"city"`
-	Road          string `json:"road"`
-	StateDistrict string `json:"stateDistrict"`
-	ISO31662Lvl4  string `json:"iso31662Lvl4"`
-	ISO31662Lvl5  string `json:"iso31662Lvl5"`
-	Municipality  string `json:"municipality"`
-	Postcode      string `json:"postcode"`
-	Suburb        string `json:"suburb"`
-	Borough       string `json:"borough"`
-	State         string `json:"state"`
+	PlaceID        string   `json:"placeId"`
+	Lat            float64  `json:"lat"`
+	Lon            float64  `json:"lon"`
+	Category       string   `json:"category"`
+	Type           string   `json:"type"`
+	Class          string   `json:"class"`
+	AddressType    string   `json:"addressType"`
+	Name           string   `json:"name"`
+	DisplayName    string   `json:"displayName"`
+	DisplayAddress string   `json:"displayAddress"`
+	Address        string   `json:"address"`
+	Country        string   `json:"country"`
+	City           string   `json:"city"`
+	Thana          string   `json:"thana"`
+	District       string   `json:"district"`
+	Division       string   `json:"division"`
+	PostalCode     string   `json:"postalCode"`
+	Website        string   `json:"website"`
+	HouseNumber    string   `json:"houseNumber"`
+	HouseName      string   `json:"houseName"`
+	SubLocality    string   `json:"subLocality"`
+	LocalArea      string   `json:"localArea"`
+	Types          []string `json:"types"`
 }
 
 func (s *client) Reverse(ctx context.Context, request ReverseRequest) (*ReverseResponse, error) {
-	
-	if isUnderMaintenance("Reverse") {
-        return &ReverseResponse{
-            Message: "Reverse service is under maintenance",
-            Status:  false,
-        }, nil
-    }
 
-	err := ValidateLatLon(request.Lat,request.Lon)
-    if err != nil {
-        return nil,err
-    }
+	if isUnderMaintenance("Reverse") {
+		return &ReverseResponse{
+			Message: "Reverse service is under maintenance",
+			Status:  false,
+		}, nil
+	}
+
+	err := ValidateLatLon(request.Lat, request.Lon)
+	if err != nil {
+		return nil, err
+	}
 
 	fmt.Println("📍 Reverse request:", request)
 

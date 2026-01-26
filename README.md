@@ -354,8 +354,8 @@ client.Search(ctx, mapnests.SearchRequest{
 
 ```go
 client.Reverse(ctx, mapnests.ReverseRequest{
-	Lat: 23.7806,
-	Lon: 90.3984,
+	Lat: 23.8103,
+	Lon: 90.4125,
 })
 ```
 
@@ -364,15 +364,36 @@ client.Reverse(ctx, mapnests.ReverseRequest{
 ```json
 {
   "data": {
-	"displayName": "Farmgate, Tejgaon, Dhaka, Bangladesh",
-	"address": {
-	  "country": "Bangladesh",
-	  "state": "Dhaka Division",
-	  "city": "Dhaka"
-	}
+    "placeId": "a4d8c105e24fbc3d91bb0486e1701fa20b9b56329df0fc5c47f7df003e3cc579",
+    "lat": 23.7952951,
+    "lon": 90.41680379038863,
+    "category": "",
+    "type": "yes",
+    "class": "building",
+    "addressType": "",
+    "name": "Concord Ik Tower",
+    "displayName": "",
+    "displayAddress": "",
+    "address": "Concord Ik Tower, House#2, Road 94, Gulshan North Avenue, Gulshan 2, Gulshan, Dhaka-1212",
+    "country": "Bangladesh",
+    "city": "Gulshan 2, Dhaka",
+    "thana": "Gulshan",
+    "district": "Dhaka",
+    "division": "",
+    "postalCode": "1212",
+    "website": "",
+    "houseNumber": "2",
+    "houseName": "",
+    "subLocality": "",
+    "localArea": "",
+    "types": [
+      "building",
+      "yes",
+      "building"
+    ]
   },
-  "status": true,
-  "message": "success"
+  "message": "Success",
+  "status": true
 }
 ```
 

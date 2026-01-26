@@ -2,7 +2,7 @@ package sdk
 
 var underMaintenanceMap = map[string]bool{
 	"Search":                  false,
-	"Reverse":                 true,
+	"Reverse":                 false,
 	"DistanceMatrix":          false,
 	"DistanceMatrixDetails":   false,
 	"PairWiseRouteSummary":    false,
