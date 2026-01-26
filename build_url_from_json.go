@@ -66,8 +66,7 @@ func buildURLFromJSON(label, jsonStr string) (string, error) {
 			activeLocations = "&activeLocations=true"
 		}
 		query := url.QueryEscape(data["Query"].(string))
-
-		return fmt.Sprintf("%s/geomap/api/v1/search?q=%s%s%s%s%s%s%s%s", baseURL, path, query, lat, lon, radius, page, limit, activeLocations), nil
+		return fmt.Sprintf("%s/geomap/api/v2/search%s?q=%s%s%s%s%s%s%s", baseURL, path, query, lat, lon, radius, page, limit, activeLocations), nil
 	case "multiSourceRouteSummary":
 		return fmt.Sprintf("%s/routemap/api/v1/routes/multi-source-summary", baseURL), nil
 	case "pairWiseRouteSummary":
