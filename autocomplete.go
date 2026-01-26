@@ -6,31 +6,32 @@ import (
 	"fmt"
 )
 
-type AutoCompleteRequest struct{
-	Query string   
-	Lat   *float64  
-	Lon   *float64   
+type AutoCompleteRequest struct {
+	Query string
+	Lat   *float64
+	Lon   *float64
 	Limit *int64
 }
 
-type AutoCompleteResponse struct{
-	Status 	bool 			`json:"status"`
-	Message string			`json:"message"`
-	Data 	[]ResponseData 	`json:"data"`
+type AutoCompleteResponse struct {
+	Status  bool           `json:"status"`
+	Message string         `json:"message"`
+	Data    []ResponseData `json:"data"`
 }
 
-type ResponseData struct{
-	PlaceID string 		`json:"placeId"`
-	Address string 		`json:"address"`
-	Types 	[]string 	`json:"types"`
+type ResponseData struct {
+	PlaceID string   `json:"placeId"`
+	Address string   `json:"address"`
+	Name    string   `json:"name"`
+	Types   []string `json:"types"`
 }
 
 func (s *client) Autocomplete(ctx context.Context, request AutoCompleteRequest) (*AutoCompleteResponse, error) {
-	err := ValidateLatLonPtr(request.Lat,request.Lon)
-    if err != nil {
-        return nil,err
-    }
-	
+	err := ValidateLatLonPtr(request.Lat, request.Lon)
+	if err != nil {
+		return nil, err
+	}
+
 	fmt.Println("📍 Autocomplete request:", request)
 
 	body, err := s.request("autocomplete", request)
