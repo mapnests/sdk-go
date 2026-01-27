@@ -24,10 +24,7 @@ type ReverseData struct {
 	Category       string   `json:"category"`
 	Type           string   `json:"type"`
 	Class          string   `json:"class"`
-	AddressType    string   `json:"addressType"`
 	Name           string   `json:"name"`
-	DisplayName    string   `json:"displayName"`
-	DisplayAddress string   `json:"displayAddress"`
 	Address        string   `json:"address"`
 	Country        string   `json:"country"`
 	City           string   `json:"city"`

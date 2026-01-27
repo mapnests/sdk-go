@@ -34,8 +34,8 @@ A secure and efficient Go SDK for the **Mapnests Platform**, enabling powerful g
   * [Distance Matrix Details](#distance-matrix-details)
   * [Pairwise Route Summary](#pairwise-route-summary)
   * [Multi Source Route Summary](#multi-source-route-summary)
-  * [Search (Geocoding)](#search-geocoding)
-  * [Reverse Geocoding](#reverse-geocoding)
+  * [Search](#search)
+  * [Reverse](#reverse)
   * [Autocomplete](#autocomplete)
   * [Autocomplete Without Zone](#autocomplete-without-zone)
   * [Search By Radius](#search-by-radius)
@@ -284,9 +284,9 @@ multiRes, err := mapClient.MultiSourceRouteSummary(ctx, mapnests.MultiSourceRout
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Search (Geocoding)
+### Search
 
-<a name="search-geocoding"></a>
+<a name="search"></a>
 
 > Finds places, streets, and landmarks using text-based queries. The search can also be refined by providing latitude and longitude with radius support.
 
@@ -344,11 +344,11 @@ client.Search(ctx, mapnests.SearchRequest{
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Reverse Geocoding
+### Reverse
 
-<a name="reverse-geocoding"></a>
+<a name="reverse"></a>
 
-> Converts GPS coordinates into a readable address.
+> Reverse geocodes coordinates to return detailed location information for a given latitude and longitude.
 
 **Example Input:**
 
@@ -370,10 +370,7 @@ client.Reverse(ctx, mapnests.ReverseRequest{
     "category": "",
     "type": "yes",
     "class": "building",
-    "addressType": "",
     "name": "Concord Ik Tower",
-    "displayName": "",
-    "displayAddress": "",
     "address": "Concord Ik Tower, House#2, Road 94, Gulshan North Avenue, Gulshan 2, Gulshan, Dhaka-1212",
     "country": "Bangladesh",
     "city": "Gulshan 2, Dhaka",
