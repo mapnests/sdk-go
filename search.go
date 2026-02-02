@@ -62,6 +62,12 @@ func (s *client) Search(ctx context.Context, request SearchRequest) (*SearchResp
 		}, nil
 	}
 
+	normalizedQuery, err := ValidateAndNormalizeQuery(request.Query)
+	if err != nil {
+		return nil, err
+	}
+	request.Query = normalizedQuery
+
 	body, err := s.request("search", request)
 	if err != nil {
 		return nil, err

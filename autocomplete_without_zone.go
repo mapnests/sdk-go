@@ -12,9 +12,14 @@ func (s *client) AutocompleteWithoutZone(ctx context.Context, request AutoComple
     if err != nil {
         return nil,err
     }
-
-	fmt.Println("📍 Autocomplete Without Zone request:", request)
 	
+	normalizedQuery, err := ValidateAndNormalizeQuery(request.Query)
+	if err != nil {
+		return nil, err
+	}
+	request.Query = normalizedQuery
+	
+	fmt.Println("📍 Autocomplete Without Zone request:", request)
 	body, err := s.request("autocompleteWithoutZone", request)
 	if err != nil {
 		return nil, err

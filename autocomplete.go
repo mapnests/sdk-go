@@ -32,6 +32,12 @@ func (s *client) Autocomplete(ctx context.Context, request AutoCompleteRequest) 
 		return nil, err
 	}
 
+	normalizedQuery, err := ValidateAndNormalizeQuery(request.Query)
+	if err != nil {
+		return nil, err
+	}
+	request.Query = normalizedQuery
+	
 	fmt.Println("📍 Autocomplete request:", request)
 
 	body, err := s.request("autocomplete", request)

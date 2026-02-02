@@ -24,6 +24,13 @@ func (s *client) SearchByRadius(ctx context.Context, request SearchByRadiusReque
 			Status:  false,
 		}, nil
 	}
+	
+	normalizedQuery, err := ValidateAndNormalizeQuery(request.Query)
+	if err != nil {
+		
+		return nil, fmt.Errorf("Error normalizing query: %v", err)
+	}
+	request.Query = normalizedQuery
 
 	body, err := s.request("searchByRadius", request)
 	if err != nil {
