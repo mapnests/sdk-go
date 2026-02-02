@@ -297,6 +297,14 @@ client.Search(ctx, mapnests.SearchRequest{
 	Query: "Uttara, Dhaka",
 })
 ```
+*To get only Zone Data provide ActiveLocations*
+
+```go
+client.Search(ctx, mapnests.SearchRequest{
+	Query: "Uttara, Dhaka",
+  ActiveLocations: true
+})
+```
 
 **Example Output:**
 
