@@ -10,6 +10,7 @@ var underMaintenanceMap = map[string]bool{
 	"Autocomplete":            false,
 	"AutocompleteWithoutZone": false,
 	"SearchByRadius":          false,
+	"DetailsByPlaceID":        false,
 }
 
 func isUnderMaintenance(fn string) bool {

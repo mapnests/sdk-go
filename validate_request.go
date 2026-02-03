@@ -8,16 +8,14 @@ import (
 )
 
 var (
-	ErrQueryLength = errors.New("query must be more than 3 characters long")
+	ErrQueryLength = errors.New("Please provide a query parameter with more than 2 characters.")
 	multiSpaceRegex = regexp.MustCompile(`\s+`)
 )
 
 func ValidateAndNormalizeQuery(query string) (string, error) {
-	query = strings.TrimSpace(query)
-
+	query = multiSpaceRegex.ReplaceAllString(strings.TrimSpace(query), " ")
 	if len(query) < 3 {
 		return "", fmt.Errorf("Error: %s", ErrQueryLength)
 	}
-	query = multiSpaceRegex.ReplaceAllString(query, " ")
 	return query, nil
 }

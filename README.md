@@ -39,6 +39,7 @@ A secure and efficient Go SDK for the **Mapnests Platform**, enabling powerful g
   * [Autocomplete](#autocomplete)
   * [Autocomplete Without Zone](#autocomplete-without-zone)
   * [Search By Radius](#search-by-radius)
+  * [Detailed Search By PlaceId ](#detailed-search-by-placeId)
 * [License](#license)
 * [Contact](#contact)
 
@@ -553,6 +554,55 @@ client.SearchByRadius(ctx, mapnests.SearchByRadiusRequest{
   "status": true
 }
 
+```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Detailed Search By PlaceId
+
+<a name="detailed-search-by-placeId"></a>
+
+> Provide detailed geolocation information for a place using its unique place_id, including address, coordinates, administrative regions, contact details, and metadata.
+
+**Example Input:**
+
+```go
+client.DetailsByPlaceID(ctx, mapnests.DetailsByPlaceIDRequest{
+		PlaceID: "4355aad6b8eb0b4f0ee3fa972ff9ac3fdc2d7f86f634d81f79dcf396f21826a0",
+	})
+```
+
+**Example Output:**
+
+```json
+{
+  "data": {
+    "placeId": "4355aad6b8eb0b4f0ee3fa972ff9ac3fdc2d7f86f634d81f79dcf396f21826a0",
+    "lat": 23.8060476,
+    "lon": 90.3744551,
+    "types": [
+      "office",
+      "office"
+    ],
+    "address": "Notari Public, House# 42, Mirpur Road, Senpara Parbata, Mirpur, Dhaka-1216",
+    "name": "Mirpur",
+    "houseNumber": "42",
+    "houseName": "",
+    "street": "Mirpur Road",
+    "phone": "",
+    "website": "",
+    "country": "Bangladesh",
+    "city": "Mirpur, Dhaka",
+    "thana": "Kafrul",
+    "division": "",
+    "district": "Dhaka",
+    "postalCode": "1216",
+    "plusCode": "",
+    "sublocality": "",
+    "localArea": ""
+  },
+  "message": "Success",
+  "status": true
+}
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

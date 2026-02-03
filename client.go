@@ -15,6 +15,7 @@ type Client interface {
 	Autocomplete(ctx context.Context, request AutoCompleteRequest) (*AutoCompleteResponse, error)
 	AutocompleteWithoutZone(ctx context.Context, request AutoCompleteRequest) (*AutoCompleteResponse, error)
 	SearchByRadius(ctx context.Context, request SearchByRadiusRequest) (*SearchResponse, error)
+	DetailsByPlaceID(ctx context.Context, request DetailsByPlaceIDRequest) (*DetailsByPlaceIDResponse, error)
 }
 
 type client struct {
