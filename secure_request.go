@@ -24,6 +24,7 @@ var HTTPMethodMap = map[string]string{
 	"autocomplete":            http.MethodGet,
 	"autocompleteWithoutZone": http.MethodGet,
 	"searchByRadius":          http.MethodGet,
+	"detailsByPlaceId":        http.MethodGet,
 }
 
 var token string

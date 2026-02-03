@@ -90,6 +90,9 @@ func buildURLFromJSON(label, jsonStr string) (string, error) {
 			lon = "&lon=" + strconv.FormatFloat(data["Lon"].(float64), 'f', 2, 64)
 		}
 		return fmt.Sprintf("%s/geomap/api/v1/autocomplete%s?q=%s%s%s%s", baseURL, path, query, lat, lon, limit), nil
+	case "detailsByPlaceId":
+		placeID := url.QueryEscape(data["PlaceID"].(string))
+		return fmt.Sprintf("%s/geomap/api/v1/details/%s", baseURL, placeID), nil
 
 	default:
 		return "", fmt.Errorf("unsupported label: %s", label)
