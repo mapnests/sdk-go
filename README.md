@@ -374,8 +374,6 @@ client.Reverse(ctx, mapnests.ReverseRequest{
 {
   "data": {
     "placeId": "a4d8c105e24fbc3d91bb0486e1701fa20b9b56329df0fc5c47f7df003e3cc579",
-    "lat": 23.7952951,
-    "lon": 90.41680379038863,
     "category": "",
     "type": "yes",
     "class": "building",
