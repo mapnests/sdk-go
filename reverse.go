@@ -19,8 +19,6 @@ type ReverseResponse struct {
 
 type ReverseData struct {
 	PlaceID        string   `json:"placeId"`
-	Lat            float64  `json:"lat"`
-	Lon            float64  `json:"lon"`
 	Category       string   `json:"category"`
 	Type           string   `json:"type"`
 	Class          string   `json:"class"`
