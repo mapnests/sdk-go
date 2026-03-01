@@ -8,7 +8,6 @@ var underMaintenanceMap = map[string]bool{
 	"PairWiseRouteSummary":    false,
 	"MultiSourceRouteSummary": false,
 	"Autocomplete":            false,
-	"AutocompleteWithoutZone": false,
 	"SearchByRadius":          false,
 	"DetailsByPlaceID":        false,
 }

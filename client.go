@@ -13,7 +13,6 @@ type Client interface {
 	PairWiseRouteSummary(ctx context.Context, request PairWiseRouteSummaryRequest) (*PairWiseRouteSummaryResponse, error)
 	MultiSourceRouteSummary(ctx context.Context, request MultiSourceRouteSummaryRequest) (*MultiSourceRouteSummaryResponse, error)
 	Autocomplete(ctx context.Context, request AutoCompleteRequest) (*AutoCompleteResponse, error)
-	AutocompleteWithoutZone(ctx context.Context, request AutoCompleteRequest) (*AutoCompleteResponse, error)
 	SearchByRadius(ctx context.Context, request SearchByRadiusRequest) (*SearchResponse, error)
 	DetailsByPlaceID(ctx context.Context, request DetailsByPlaceIDRequest) (*DetailsByPlaceIDResponse, error)
 }

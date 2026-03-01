@@ -37,7 +37,6 @@ A secure and efficient Go SDK for the **Mapnests Platform**, enabling powerful g
   * [Search](#search)
   * [Reverse](#reverse)
   * [Autocomplete](#autocomplete)
-  * [Autocomplete Without Zone](#autocomplete-without-zone)
   * [Search By Radius](#search-by-radius)
   * [Detailed Search By PlaceId ](#detailed-search-by-placeId)
 * [License](#license)
@@ -417,13 +416,30 @@ autocompleteRes, err := mapClient.Autocomplete(ctx, mapnests.AutoCompleteRequest
 		Query: "Gulshan Road"
 	})
 	
-//With optional value (Latitude, Longitude, Limit)
+// Optional parameter: ActiveZone.
+// If ActiveZone is set to true, the search results will be returned within the zone. (By Default ActiveZone is true)
+// If ActiveZone is set to false, the search results will be not consider any zone data.
+autocompleteRes, err := mapClient.Autocomplete(ctx, mapnests.AutoCompleteRequest{
+		Query: "Gulshan Road",
+    ActiveZone: &activeZone,	
+	}) 
+
+// Optional parameters: Latitude, Longitude, and Radius.
+// If provided, the search results will be returned within a specified radius,
+// using the given latitude and longitude as the center point.
 autocompleteRes, err := mapClient.Autocomplete(ctx, mapnests.AutoCompleteRequest{
 		Query: "Gulshan Road",
 		Lat: &lat,
 		Lon: &lon,
-		Limit: &limit,	
+    Radius: &radius,	
 	})
+
+// Optional parameter: Limit.
+// If provided, the search results will be returned within a specified limit.
+autocompleteRes, err := mapClient.Autocomplete(ctx, mapnests.AutoCompleteRequest{
+		Query: "Gulshan Road",
+    Limit: &limit,	
+	})  
 ```
 
 **Example Output:**

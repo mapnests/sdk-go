@@ -22,7 +22,6 @@ var HTTPMethodMap = map[string]string{
 	"pairWiseRouteSummary":    http.MethodPost,
 	"multiSourceRouteSummary": http.MethodPost,
 	"autocomplete":            http.MethodGet,
-	"autocompleteWithoutZone": http.MethodGet,
 	"searchByRadius":          http.MethodGet,
 	"detailsByPlaceId":        http.MethodGet,
 }
