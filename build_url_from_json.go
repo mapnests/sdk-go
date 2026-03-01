@@ -70,16 +70,13 @@ func buildURLFromJSON(label, jsonStr string) (string, error) {
 	case "multiSourceRouteSummary":
 		return fmt.Sprintf("%s/routemap/api/v1/routes/multi-source-summary", baseURL), nil
 	case "pairWiseRouteSummary":
-		return fmt.Sprintf("%s/routemap/api/v1/routes/pairwise-summary", baseURL), nil
-	case "autocomplete", "autocompleteWithoutZone":
+		return fmt.Sprintf("%s/routemap/api/v2/routes/pairwise-summary", baseURL), nil
+	case "autocomplete":
 		query := url.QueryEscape(data["Query"].(string))
-		path := "/all"
 		var lat string
 		var lon string
 		var limit string
-		if label == "autocomplete" {
-			path = ""
-		}
+		var zoneActiveOnly string
 		if data["Limit"] != nil && data["Limit"].(float64) > 0 {
 			limit = "&limit=" + strconv.FormatFloat(data["Limit"].(float64), 'f', 0, 64)
 		}
@@ -89,7 +86,10 @@ func buildURLFromJSON(label, jsonStr string) (string, error) {
 		if data["Lon"] != nil && data["Lon"].(float64) > 0 {
 			lon = "&lon=" + strconv.FormatFloat(data["Lon"].(float64), 'f', 2, 64)
 		}
-		return fmt.Sprintf("%s/geomap/api/v1/autocomplete%s?q=%s%s%s%s", baseURL, path, query, lat, lon, limit), nil
+		if data["ActiveZone"] != nil {
+			zoneActiveOnly = "&zoneActiveOnly=" + strconv.FormatBool(data["ActiveZone"].(bool))
+		}
+		return fmt.Sprintf("%s/geomap/api/v2/autocomplete?q=%s%s%s%s%s", baseURL, query, zoneActiveOnly, lat, lon, limit), nil
 	case "detailsByPlaceId":
 		placeID := url.QueryEscape(data["PlaceID"].(string))
 		return fmt.Sprintf("%s/geomap/api/v1/details/%s", baseURL, placeID), nil

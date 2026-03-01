@@ -7,10 +7,11 @@ import (
 )
 
 type AutoCompleteRequest struct {
-	Query string
-	Lat   *float64
-	Lon   *float64
-	Limit *int64
+	Query      string
+	ActiveZone *bool
+	Lat        *float64
+	Lon        *float64
+	Limit      *int64
 }
 
 type AutoCompleteResponse struct {
@@ -37,7 +38,7 @@ func (s *client) Autocomplete(ctx context.Context, request AutoCompleteRequest) 
 		return nil, err
 	}
 	request.Query = normalizedQuery
-	
+
 	fmt.Println("📍 Autocomplete request:", request)
 
 	body, err := s.request("autocomplete", request)
