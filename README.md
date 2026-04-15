@@ -39,6 +39,7 @@ A secure and efficient Go SDK for the **Mapnests Platform**, enabling powerful g
   * [Autocomplete](#autocomplete)
   * [Search By Radius](#search-by-radius)
   * [Detailed Search By PlaceId ](#detailed-search-by-placeId)
+  * [Snap to Road](#snap-to-road)
 * [License](#license)
 * [Contact](#contact)
 
@@ -619,6 +620,45 @@ client.DetailsByPlaceID(ctx, mapnests.DetailsByPlaceIDRequest{
 }
 ```
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Snap to Road
+
+<a name="snap-to-road"></a>
+
+> Returns the nearest road’s latitude and longitude for the given input coordinates.
+
+**Example Input:**
+
+```ts
+client.SnapToRoad(ctx, mapnests.SnapToRoadRequest{
+		Mode: "walking",
+		Latitude: 23.8103,
+		Longitude: 90.4125,
+		},
+	)
+```
+
+**Example Output:**
+
+```json
+{
+  "data": {
+    "waypoints": [
+      {
+        "address": "Lane 11 East, বারিধারা ডিওএইচএস, জোয়ার সাহারা, ঢাকা, ঢাকা মহানগর, ঢাকা জেলা, ঢাকা বিভাগ, 1229, বাংলাদেশ",
+        "location": [
+          90.412496,
+          23.810403
+        ],
+        "distance_meters": 11.41511481
+      }
+    ]
+  },
+  "message": "Success",
+  "status": true
+}
+```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ---
