@@ -10,6 +10,7 @@ var underMaintenanceMap = map[string]bool{
 	"Autocomplete":            false,
 	"SearchByRadius":          false,
 	"DetailsByPlaceID":        false,
+	"SnapToRoad":              false,
 }
 
 func isUnderMaintenance(fn string) bool {

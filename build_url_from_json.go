@@ -33,7 +33,7 @@ func buildURLFromJSON(label, jsonStr string) (string, error) {
 		version := "v3"
 		if label == "distanceMatrixDetails" {
 			path = "distancematrixdetails"
-			version = "v1"
+			version = "v2"
 		}
 		return fmt.Sprintf("%s/routemap/api/%s/routes/%s?fromLat=%f&fromLong=%f&toLat=%f&toLong=%f&mode=%s", baseURL, version, path, fromLat, fromLon, toLat, toLon, mode), nil
 	case "search", "searchByRadius":
@@ -93,6 +93,9 @@ func buildURLFromJSON(label, jsonStr string) (string, error) {
 	case "detailsByPlaceId":
 		placeID := url.QueryEscape(data["PlaceID"].(string))
 		return fmt.Sprintf("%s/geomap/api/v1/details/%s", baseURL, placeID), nil
+
+	case "snapToRoad":
+		return fmt.Sprintf("%s/routemap/api/v1/nearest/road", baseURL), nil
 
 	default:
 		return "", fmt.Errorf("unsupported label: %s", label)
