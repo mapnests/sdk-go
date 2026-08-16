@@ -12,6 +12,7 @@ type DistanceMatrixRequest struct {
 	DestLat   float64
 	DestLon   float64
 	Mode      Mode
+	XRequestID *string
 }
 
 type DistanceMatrixData struct {
@@ -33,8 +34,6 @@ func (s *client) DistanceMatrix(ctx context.Context, request DistanceMatrixReque
     if err != nil {
         return nil,err
     }
-	
-	fmt.Println("📍 DistanceMatrix request:", request)
 
 	body, err := s.request("distanceMatrix", request)
 	if err != nil {
@@ -46,6 +45,5 @@ func (s *client) DistanceMatrix(ctx context.Context, request DistanceMatrixReque
 		return nil, fmt.Errorf("error unmarshaling DistanceMatrixResponse: %w", err)
 	}
 
-	fmt.Println("📍 DistanceMatrix response:", response)
 	return &response, nil
 }

@@ -9,6 +9,7 @@ import (
 type ReverseRequest struct {
 	Lat float64
 	Lon float64
+	XRequestID *string
 }
 
 type ReverseResponse struct {
@@ -51,8 +52,6 @@ func (s *client) Reverse(ctx context.Context, request ReverseRequest) (*ReverseR
 	if err != nil {
 		return nil, err
 	}
-
-	fmt.Println("📍 Reverse request:", request)
 
 	body, err := s.request("reverse", request)
 	if err != nil {

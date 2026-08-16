@@ -19,7 +19,8 @@ type PairWiseRoute struct {
 }
 
 type PairWiseRouteSummaryRequest struct {
-	Pairs []PairWiseRoute `json:"pairs"`
+	Pairs []PairWiseRoute 
+	XRequestID *string
 }
 
 type RouteStep struct {
@@ -72,8 +73,6 @@ func (s *client) PairWiseRouteSummary(ctx context.Context, request PairWiseRoute
 			return nil, err
 		}
 	}
-
-	fmt.Println("📍 PairWiseRouteSummary request:", request)
 
 	body, err := s.request("pairWiseRouteSummary", request)
 	if err != nil {

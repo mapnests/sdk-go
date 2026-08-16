@@ -8,6 +8,7 @@ import (
 
 type DetailsByPlaceIDRequest struct {
 	PlaceID string
+	XRequestID *string
 }
 
 type PlaceDetail struct {
@@ -46,8 +47,6 @@ func (s *client) DetailsByPlaceID(ctx context.Context, request DetailsByPlaceIDR
 			Status:  false,
 		}, nil
 	}
-
-	fmt.Println("📍 DetailsByPlaceID request:", request)
 	
 	body, err := s.request("detailsByPlaceId", request)
 

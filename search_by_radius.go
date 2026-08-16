@@ -14,6 +14,7 @@ type SearchByRadiusRequest struct {
 	ActiveLocations bool
 	Page            *int64
 	Limit           *int64
+	XRequestID 		*string
 }
 
 func (s *client) SearchByRadius(ctx context.Context, request SearchByRadiusRequest) (*SearchResponse, error) {

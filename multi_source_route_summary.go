@@ -19,8 +19,9 @@ type Destination struct {
 }
 
 type MultiSourceRouteSummaryRequest struct {
-	Sources     []Source    `json:"sources"`
-	Destination Destination `json:"destination"`
+	Sources     []Source    
+	Destination Destination
+	XRequestID *string
 }
 
 type RouteSummary struct {
@@ -51,8 +52,6 @@ func (s *client) MultiSourceRouteSummary(ctx context.Context, request MultiSourc
     if err := ValidateLatLon(request.Destination.Lat, request.Destination.Lon); err != nil {
         return nil, err
     }
-
-	fmt.Println("📍 MultiSourceRouteSummaryRequest request:", request)
 
 	body, err := s.request("multiSourceRouteSummary", request)
 	if err != nil {
