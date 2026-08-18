@@ -14,6 +14,7 @@ type SearchRequest struct {
 	Page            *int64
 	Limit           *int64
 	ActiveLocations bool
+	XRequestID      *string
 }
 
 type SearchResponse struct {

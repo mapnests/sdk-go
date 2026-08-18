@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	minLat  = 20.74 
+	minLat  = 20.74
 	maxLat  = 26.63
 	minLon  = 88.01
 	maxLon  = 92.67
@@ -15,13 +15,12 @@ const (
 )
 
 var (
-	ErrInvalidLatitude     = errors.New("latitude must be between 20.74 and 26.63 (Only Inside Bangladesh)")
-	ErrInvalidLongitude    = errors.New("longitude must be between 88.01 and 92.67 (Only Inside Bangladesh)")
-	ErrNaNLatitude         = errors.New("latitude cannot be NaN")
-	ErrNaNLongitude        = errors.New("longitude cannot be NaN")
-	ErrSameLatLon          = errors.New("latitude and longitude have the same value")
+	ErrInvalidLatitude  = errors.New("latitude must be between 20.74 and 26.63 (Only Inside Bangladesh)")
+	ErrInvalidLongitude = errors.New("longitude must be between 88.01 and 92.67 (Only Inside Bangladesh)")
+	ErrNaNLatitude      = errors.New("latitude cannot be NaN")
+	ErrNaNLongitude     = errors.New("longitude cannot be NaN")
+	ErrSameLatLon       = errors.New("latitude and longitude have the same value")
 )
-
 
 type ValidationResult struct {
 	Valid       bool

@@ -14,7 +14,11 @@ func callSecureRequest(label, apiKey, origin string, timeoutMs int32, request an
 	result := performSecureRequest(label, apiKey, origin, timeoutMs, string(jsonBytes))
 
 	if !result.Success {
-		return result.StatusCode, "", result.ErrorMessage, fmt.Errorf("secure request failed")
+		errMsg := result.ErrorMessage
+		if errMsg == "" {
+			errMsg = result.Response
+		}
+		return result.StatusCode, "", errMsg, fmt.Errorf("secure request failed")
 	}
 
 	return result.StatusCode, result.Response, "", nil

@@ -16,6 +16,7 @@ type Client interface {
 	SearchByRadius(ctx context.Context, request SearchByRadiusRequest) (*SearchResponse, error)
 	DetailsByPlaceID(ctx context.Context, request DetailsByPlaceIDRequest) (*DetailsByPlaceIDResponse, error)
 	SnapToRoad(ctx context.Context, request SnapToRoadRequest) (*SnapToRoadResponse, error)
+	MultiStopPoints(ctx context.Context, request MultiStopPointsRequest) (*MultiStopPointsResponse, error)
 }
 
 type client struct {

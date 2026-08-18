@@ -97,6 +97,9 @@ func buildURLFromJSON(label, jsonStr string) (string, error) {
 	case "snapToRoad":
 		return fmt.Sprintf("%s/routemap/api/v1/nearest/road", baseURL), nil
 
+	case "multiStopPoints":
+		return fmt.Sprintf("%s/routemap/api/v1/routes/multi-stoppoints", baseURL), nil
+
 	default:
 		return "", fmt.Errorf("unsupported label: %s", label)
 	}

@@ -19,8 +19,9 @@ type Destination struct {
 }
 
 type MultiSourceRouteSummaryRequest struct {
-	Sources     []Source    `json:"sources"`
-	Destination Destination `json:"destination"`
+	Sources     []Source
+	Destination Destination
+	XRequestID  *string
 }
 
 type RouteSummary struct {
@@ -41,18 +42,16 @@ type MultiSourceRouteSummaryResponse struct {
 }
 
 func (s *client) MultiSourceRouteSummary(ctx context.Context, request MultiSourceRouteSummaryRequest) (*MultiSourceRouteSummaryResponse, error) {
-	
+
 	for _, src := range request.Sources {
-        if err := ValidateLatLon(src.Lat, src.Lon); err != nil {
-            return nil, err
-        }
-    }
+		if err := ValidateLatLon(src.Lat, src.Lon); err != nil {
+			return nil, err
+		}
+	}
 
-    if err := ValidateLatLon(request.Destination.Lat, request.Destination.Lon); err != nil {
-        return nil, err
-    }
-
-	fmt.Println("📍 MultiSourceRouteSummaryRequest request:", request)
+	if err := ValidateLatLon(request.Destination.Lat, request.Destination.Lon); err != nil {
+		return nil, err
+	}
 
 	body, err := s.request("multiSourceRouteSummary", request)
 	if err != nil {

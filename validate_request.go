@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	ErrQueryLength = errors.New("Please provide a query parameter with more than 2 characters.")
+	ErrQueryLength  = errors.New("Please provide a query parameter with more than 2 characters.")
 	multiSpaceRegex = regexp.MustCompile(`\s+`)
 )
 

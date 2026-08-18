@@ -7,7 +7,8 @@ import (
 )
 
 type DetailsByPlaceIDRequest struct {
-	PlaceID string
+	PlaceID    string
+	XRequestID *string
 }
 
 type PlaceDetail struct {
@@ -34,9 +35,9 @@ type PlaceDetail struct {
 }
 
 type DetailsByPlaceIDResponse struct {
-	Data    PlaceDetail			 `json:"data"`
-	Message string               `json:"message"`
-	Status  bool                 `json:"status"`
+	Data    PlaceDetail `json:"data"`
+	Message string      `json:"message"`
+	Status  bool        `json:"status"`
 }
 
 func (s *client) DetailsByPlaceID(ctx context.Context, request DetailsByPlaceIDRequest) (*DetailsByPlaceIDResponse, error) {
@@ -47,8 +48,6 @@ func (s *client) DetailsByPlaceID(ctx context.Context, request DetailsByPlaceIDR
 		}, nil
 	}
 
-	fmt.Println("📍 DetailsByPlaceID request:", request)
-	
 	body, err := s.request("detailsByPlaceId", request)
 
 	if err != nil {

@@ -1,16 +1,12 @@
 package sdk
 
-import (
-	"fmt"
-)
-
-func (s *client) request(label string, request interface{}) ([]byte, error) {
-	status, resp, errMsg, err := callSecureRequest(label, s.apiKey, s.packageName, s.timeoutMs, request)
+func (s *client) request(label string, req interface{}) ([]byte, error) {
+	status, resp, errMsg, err := callSecureRequest(label, s.apiKey, s.packageName, s.timeoutMs, req)
 	if err != nil {
-		return nil, fmt.Errorf("[%s] native error: %s", label, errMsg)
+		return nil, &APIError{Label: label, StatusCode: status, Body: errMsg}
 	}
 	if status != 200 {
-		return nil, fmt.Errorf("[%s] unexpected status code %d", label, status)
+		return nil, &APIError{Label: label, StatusCode: status, Body: resp}
 	}
 	return []byte(resp), nil
 }

@@ -19,7 +19,8 @@ type PairWiseRoute struct {
 }
 
 type PairWiseRouteSummaryRequest struct {
-	Pairs []PairWiseRoute `json:"pairs"`
+	Pairs      []PairWiseRoute
+	XRequestID *string
 }
 
 type RouteStep struct {
@@ -44,17 +45,15 @@ type RouteLeg struct {
 }
 
 type PairWiseRouteSummary struct {
-	ID             int     		`json:"id"`
-	DistanceMeters float64 		`json:"distanceInMeters"`
-	EtaSeconds     float64 		`json:"etaInSeconds"`
-	Geometry       string  		`json:"geometry"`
-	Legs           []RouteLeg 	`json:"legs"`
+	ID             int        `json:"id"`
+	DistanceMeters float64    `json:"distanceInMeters"`
+	EtaSeconds     float64    `json:"etaInSeconds"`
+	Geometry       string     `json:"geometry"`
+	Legs           []RouteLeg `json:"legs"`
 }
-
 
 type RouteSummaryResponseData struct {
 	RouteSummaries []PairWiseRouteSummary `json:"routeSummaries"`
-	
 }
 
 type PairWiseRouteSummaryResponse struct {
@@ -72,8 +71,6 @@ func (s *client) PairWiseRouteSummary(ctx context.Context, request PairWiseRoute
 			return nil, err
 		}
 	}
-
-	fmt.Println("📍 PairWiseRouteSummary request:", request)
 
 	body, err := s.request("pairWiseRouteSummary", request)
 	if err != nil {
