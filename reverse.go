@@ -7,8 +7,8 @@ import (
 )
 
 type ReverseRequest struct {
-	Lat float64
-	Lon float64
+	Lat        float64
+	Lon        float64
 	XRequestID *string
 }
 
@@ -19,24 +19,24 @@ type ReverseResponse struct {
 }
 
 type ReverseData struct {
-	PlaceID        string   `json:"placeId"`
-	Category       string   `json:"category"`
-	Type           string   `json:"type"`
-	Class          string   `json:"class"`
-	Name           string   `json:"name"`
-	Address        string   `json:"address"`
-	Country        string   `json:"country"`
-	City           string   `json:"city"`
-	Thana          string   `json:"thana"`
-	District       string   `json:"district"`
-	Division       string   `json:"division"`
-	PostalCode     string   `json:"postalCode"`
-	Website        string   `json:"website"`
-	HouseNumber    string   `json:"houseNumber"`
-	HouseName      string   `json:"houseName"`
-	SubLocality    string   `json:"subLocality"`
-	LocalArea      string   `json:"localArea"`
-	Types          []string `json:"types"`
+	PlaceID     string   `json:"placeId"`
+	Category    string   `json:"category"`
+	Type        string   `json:"type"`
+	Class       string   `json:"class"`
+	Name        string   `json:"name"`
+	Address     string   `json:"address"`
+	Country     string   `json:"country"`
+	City        string   `json:"city"`
+	Thana       string   `json:"thana"`
+	District    string   `json:"district"`
+	Division    string   `json:"division"`
+	PostalCode  string   `json:"postalCode"`
+	Website     string   `json:"website"`
+	HouseNumber string   `json:"houseNumber"`
+	HouseName   string   `json:"houseName"`
+	SubLocality string   `json:"subLocality"`
+	LocalArea   string   `json:"localArea"`
+	Types       []string `json:"types"`
 }
 
 func (s *client) Reverse(ctx context.Context, request ReverseRequest) (*ReverseResponse, error) {

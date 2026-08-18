@@ -19,7 +19,7 @@ type PairWiseRoute struct {
 }
 
 type PairWiseRouteSummaryRequest struct {
-	Pairs []PairWiseRoute 
+	Pairs      []PairWiseRoute
 	XRequestID *string
 }
 
@@ -45,17 +45,15 @@ type RouteLeg struct {
 }
 
 type PairWiseRouteSummary struct {
-	ID             int     		`json:"id"`
-	DistanceMeters float64 		`json:"distanceInMeters"`
-	EtaSeconds     float64 		`json:"etaInSeconds"`
-	Geometry       string  		`json:"geometry"`
-	Legs           []RouteLeg 	`json:"legs"`
+	ID             int        `json:"id"`
+	DistanceMeters float64    `json:"distanceInMeters"`
+	EtaSeconds     float64    `json:"etaInSeconds"`
+	Geometry       string     `json:"geometry"`
+	Legs           []RouteLeg `json:"legs"`
 }
-
 
 type RouteSummaryResponseData struct {
 	RouteSummaries []PairWiseRouteSummary `json:"routeSummaries"`
-	
 }
 
 type PairWiseRouteSummaryResponse struct {

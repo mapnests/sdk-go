@@ -7,11 +7,11 @@ import (
 )
 
 type DistanceMatrixRequest struct {
-	OriginLat float64
-	OriginLon float64
-	DestLat   float64
-	DestLon   float64
-	Mode      Mode
+	OriginLat  float64
+	OriginLon  float64
+	DestLat    float64
+	DestLon    float64
+	Mode       Mode
 	XRequestID *string
 }
 
@@ -25,15 +25,15 @@ type DistanceMatrixResponse struct {
 }
 
 func (s *client) DistanceMatrix(ctx context.Context, request DistanceMatrixRequest) (*DistanceMatrixResponse, error) {
-	err := ValidateLatLon(request.OriginLat,request.OriginLon)
-    if err != nil {
-        return nil,err
-    }
+	err := ValidateLatLon(request.OriginLat, request.OriginLon)
+	if err != nil {
+		return nil, err
+	}
 
-	err = ValidateLatLon(request.DestLat,request.DestLon)
-    if err != nil {
-        return nil,err
-    }
+	err = ValidateLatLon(request.DestLat, request.DestLon)
+	if err != nil {
+		return nil, err
+	}
 
 	body, err := s.request("distanceMatrix", request)
 	if err != nil {

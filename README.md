@@ -40,6 +40,7 @@ A secure and efficient Go SDK for the **Mapnests Platform**, enabling powerful g
   * [Search By Radius](#search-by-radius)
   * [Detailed Search By PlaceId ](#detailed-search-by-placeId)
   * [Snap to Road](#snap-to-road)
+  * [Multi Stop Point](#multi-stop-point)
 * [License](#license)
 * [Contact](#contact)
 
@@ -663,6 +664,70 @@ client.SnapToRoad(ctx, mapnests.SnapToRoadRequest{
 
 ---
 
+
+### Multi Stop Point
+
+<a name="snap-to-road"></a>
+
+> Calculates distance, ETA, and route geometry for a journey starting from a single source and passing through multiple stop points in sequence. It returns both total and per-segment results, processes routes concurrently for efficiency, and supports multiple stops.
+
+**Example Input:**
+
+```ts
+
+  client.MultiStopPoints(ctx, mapnests.MultiStopPointsRequest{
+		Src: mapnests.Coordinate{Lat: 23.7805733, Lon: 90.2792399},
+		StopPoints: []mapnests.StopPoint{
+			{ID: 1, Lat: 23.7805733, Lon: 90.2792399},
+			{ID: 2, Lat: 23.75, Lon: 90.36},
+		},
+		Mode: mapnests.TravelModeBicycling,
+	})
+```
+
+**Example Output:**
+
+```json
+{
+  "data": {
+    "DistanceInMeters": 10783.300170898438,
+    "EtaInSeconds": 2903.2998962402344,
+    "RouteSummaries": [
+      {
+        "id": 1,
+        "distanceInMeters": 780.1,
+        "etaInSeconds": 243.9,
+        "geometry": "qjipCiznfPQ_A~Dy@zCy@{CmJiBiHaAL]wDmAN",
+        "Source": {
+          "lat": 23.809973415982903,
+          "lon": 90.35697149649764
+        },
+        "StopPoint": {
+          "lat": 23.81038738311683,
+          "lon": 90.36203008256733
+        }
+      },
+      {
+        "id": 2,
+        "distanceInMeters": 10003.2,
+        "etaInSeconds": 2659.4,
+        "geometry": "{mipCoyofP^oXoAcHbTuE?}IpEwYr_@}h@fNgd@zZmC`NZ~Co@a@kJbB_Kw@sSl@}^l@SuEc@zC{a@mReBT_VqXqpAsNpAhN}ByDmv@SwNbBq@",
+        "Source": {
+          "lat": 23.81038738311683,
+          "lon": 90.36203008256733
+        },
+        "StopPoint": {
+          "lat": 23.798308134287165,
+          "lon": 90.43522641639149
+        }
+      }
+    ]
+  },
+  "message": "Success",
+  "status": true
+}
+```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## License
 

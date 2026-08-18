@@ -7,14 +7,14 @@ import (
 )
 
 type SearchRequest struct {
-	Query           	string
-	Lat             	*float64
-	Lon             	*float64
-	Radius          	*int64
-	Page            	*int64
-	Limit           	*int64
-	ActiveLocations 	bool
-	XRequestID 			*string
+	Query           string
+	Lat             *float64
+	Lon             *float64
+	Radius          *int64
+	Page            *int64
+	Limit           *int64
+	ActiveLocations bool
+	XRequestID      *string
 }
 
 type SearchResponse struct {

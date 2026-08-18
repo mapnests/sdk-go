@@ -25,6 +25,7 @@ var HTTPMethodMap = map[string]string{
 	"searchByRadius":          http.MethodGet,
 	"detailsByPlaceId":        http.MethodGet,
 	"snapToRoad":              http.MethodPost,
+	"multiStopPoints":         http.MethodPost,
 }
 
 var token string
