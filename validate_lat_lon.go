@@ -7,16 +7,16 @@ import (
 )
 
 const (
-	minLat  = 20.74
-	maxLat  = 26.63
-	minLon  = 88.01
-	maxLon  = 92.67
+	minLat  = 20.5
+	maxLat  = 26.7
+	minLon  = 87.9
+	maxLon  = 92.8
 	epsilon = 1e-9 // Tolerance for floating point comparison
 )
 
 var (
-	ErrInvalidLatitude  = errors.New("latitude must be between 20.74 and 26.63 (Only Inside Bangladesh)")
-	ErrInvalidLongitude = errors.New("longitude must be between 88.01 and 92.67 (Only Inside Bangladesh)")
+	ErrInvalidLatitude  = errors.New("Invalid Query Params, latitude must be between 20.5 and 26.7 (Only Inside Bangladesh)")
+	ErrInvalidLongitude = errors.New("Invalid Query Params, longitude must be between 87.9 and 92.8 (Only Inside Bangladesh)")
 	ErrNaNLatitude      = errors.New("latitude cannot be NaN")
 	ErrNaNLongitude     = errors.New("longitude cannot be NaN")
 	ErrSameLatLon       = errors.New("latitude and longitude have the same value")

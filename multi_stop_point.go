@@ -49,8 +49,6 @@ func (s *client) MultiStopPoints(ctx context.Context, request MultiStopPointsReq
 		}
 	}
 
-	fmt.Println("📍 MultiStopPointsRequest request:", request)
-
 	body, err := s.request("multiStopPoints", request)
 	if err != nil {
 		return nil, err
