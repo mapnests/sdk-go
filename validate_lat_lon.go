@@ -15,8 +15,8 @@ const (
 )
 
 var (
-	ErrInvalidLatitude  = errors.New("Invalid Query Params, latitude must be between 20.5 and 26.7 (Only Inside Bangladesh)")
-	ErrInvalidLongitude = errors.New("Invalid Query Params, longitude must be between 87.9 and 92.8 (Only Inside Bangladesh)")
+	ErrInvalidLatitude  = errors.New("invalid query params, latitude must be between 20.5 and 26.7 (Only Inside Bangladesh)")
+	ErrInvalidLongitude = errors.New("invalid query params, longitude must be between 87.9 and 92.8 (Only Inside Bangladesh)")
 	ErrNaNLatitude      = errors.New("latitude cannot be NaN")
 	ErrNaNLongitude     = errors.New("longitude cannot be NaN")
 	ErrSameLatLon       = errors.New("latitude and longitude have the same value")
