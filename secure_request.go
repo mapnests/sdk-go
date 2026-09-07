@@ -2,6 +2,7 @@ package sdk
 
 import (
 	"bytes"
+	"encoding/json"
 	"io"
 	"net/http"
 	"time"
@@ -15,20 +16,43 @@ type SecureResult struct {
 }
 
 var HTTPMethodMap = map[string]string{
-	"reverse":                 http.MethodGet,
-	"search":                  http.MethodGet,
-	"distanceMatrix":          http.MethodGet,
-	"distanceMatrixDetails":   http.MethodGet,
-	"pairWiseRouteSummary":    http.MethodPost,
-	"multiSourceRouteSummary": http.MethodPost,
-	"autocomplete":            http.MethodGet,
-	"searchByRadius":          http.MethodGet,
-	"detailsByPlaceId":        http.MethodGet,
-	"snapToRoad":              http.MethodPost,
-	"multiStopPoints":         http.MethodPost,
+	"reverse":                                http.MethodGet,
+	"search":                                 http.MethodGet,
+	"distanceMatrix":                         http.MethodGet,
+	"distanceMatrixDetails":                  http.MethodGet,
+	"pairWiseRouteSummary":                   http.MethodPost,
+	"multiSourceRouteSummary":                http.MethodPost,
+	"autocomplete":                           http.MethodGet,
+	"searchByRadius":                         http.MethodGet,
+	"detailsByPlaceId":                       http.MethodGet,
+	"snapToRoad":                             http.MethodPost,
+	"multiStopPoints":                        http.MethodPost,
+	"multiSourceRouteSummaryWithoutGeometry": http.MethodPost,
 }
 
 var token string
+
+// XRequestIDFromJSON extracts the XRequestID field from a request's marshaled
+// JSON so it can be forwarded as the x-request-id header. It returns an empty
+// string when the field is absent, null, or the JSON can't be parsed.
+func XRequestIDFromJSON(jsonRequest string) string {
+	var data map[string]interface{}
+	if err := json.Unmarshal([]byte(jsonRequest), &data); err != nil {
+		return ""
+	}
+
+	v, ok := data["XRequestID"]
+	if !ok || v == nil {
+		return ""
+	}
+
+	id, ok := v.(string)
+	if !ok {
+		return ""
+	}
+
+	return id
+}
 
 func performSecureRequest(label string, apiKey string, origin string, timeoutMs int32, jsonRequest string) SecureResult {
 
@@ -52,6 +76,7 @@ func performSecureRequest(label string, apiKey string, origin string, timeoutMs 
 		"Origin":       origin,
 		"fxsrf":        tokenHeader,
 		"Content-Type": "application/json",
+		"x-request-id": XRequestIDFromJSON(jsonRequest),
 	}
 
 	client := &http.Client{Timeout: time.Duration(timeoutMs) * time.Millisecond}

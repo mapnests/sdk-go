@@ -48,6 +48,10 @@ func (s *client) DetailsByPlaceID(ctx context.Context, request DetailsByPlaceIDR
 		}, nil
 	}
 
+	if err := ValidateXRequestID(request.XRequestID); err != nil {
+		return nil, err
+	}
+
 	body, err := s.request("detailsByPlaceId", request)
 
 	if err != nil {

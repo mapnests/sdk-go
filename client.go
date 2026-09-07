@@ -17,6 +17,8 @@ type Client interface {
 	DetailsByPlaceID(ctx context.Context, request DetailsByPlaceIDRequest) (*DetailsByPlaceIDResponse, error)
 	SnapToRoad(ctx context.Context, request SnapToRoadRequest) (*SnapToRoadResponse, error)
 	MultiStopPoints(ctx context.Context, request MultiStopPointsRequest) (*MultiStopPointsResponse, error)
+	Geocode(ctx context.Context, request GeocodeRequest) (*GeocodeResponse, error)
+	MultiSourceRouteSummaryWithoutGeometry(ctx context.Context, request MultiSourceRouteSummaryRequestWithoutGeometry) (*MultiSourceRouteSummaryWithoutGeometryResponse, error)
 }
 
 type client struct {

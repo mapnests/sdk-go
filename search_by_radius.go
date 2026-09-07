@@ -7,14 +7,15 @@ import (
 )
 
 type SearchByRadiusRequest struct {
-	Query           string
-	Lat             float64
-	Lon             float64
-	Radius          int64
-	ActiveLocations bool
-	Page            *int64
-	Limit           *int64
-	XRequestID      *string
+	Query            string
+	Lat              float64
+	Lon              float64
+	Radius           int64
+	ActiveLocations  bool
+	Page             *int64
+	Limit            *int64
+	AcceptedLanguage *string
+	XRequestID       *string
 }
 
 func (s *client) SearchByRadius(ctx context.Context, request SearchByRadiusRequest) (*SearchResponse, error) {
@@ -24,6 +25,22 @@ func (s *client) SearchByRadius(ctx context.Context, request SearchByRadiusReque
 			Message: "SearchByRadius service is under maintenance",
 			Status:  false,
 		}, nil
+	}
+
+	if err := ValidateXRequestID(request.XRequestID); err != nil {
+		return nil, err
+	}
+
+	if err := ValidateAcceptedLanguage(request.AcceptedLanguage); err != nil {
+		return nil, err
+	}
+
+	if err := ValidateLimit(request.Limit, SearchByRadiusMaxLimit); err != nil {
+		return nil, err
+	}
+
+	if err := ValidateRadius(request.Radius, SearchByRadiusMaxRadius); err != nil {
+		return nil, err
 	}
 
 	normalizedQuery, err := ValidateAndNormalizeQuery(request.Query)
