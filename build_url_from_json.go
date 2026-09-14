@@ -177,6 +177,34 @@ func buildURLFromJSON(label, jsonStr string) (string, error) {
 	case "multiStopPoints":
 		return fmt.Sprintf("%s/routemap/api/v1/routes/multi-stoppoints", baseURL), nil
 
+	// ETA APIs
+	case "etaWithoutGeometryByMode":
+		fromLat := data["FromLat"].(float64)
+		fromLon := data["FromLon"].(float64)
+		toLat := data["ToLat"].(float64)
+		toLon := data["ToLon"].(float64)
+		mode := url.QueryEscape(data["Mode"].(string))
+		var route_count string
+		if data["NoOfRoutes"] != nil && data["NoOfRoutes"].(float64) > 0 {
+			route_count = "&route_count=" + strconv.FormatFloat(data["NoOfRoutes"].(float64), 'f', 0, 64)
+		}
+		return fmt.Sprintf("%s/eta/api/v1/get-eta?from_lat=%f&from_lon=%f&to_lat=%f&to_lon=%f&mode=%s%s", baseURL, fromLat, fromLon, toLat, toLon, mode, route_count), nil
+
+	case "etaWithGeometryByMode":
+		fromLat := data["FromLat"].(float64)
+		fromLon := data["FromLon"].(float64)
+		toLat := data["ToLat"].(float64)
+		toLon := data["ToLon"].(float64)
+		mode := url.QueryEscape(data["Mode"].(string))
+		return fmt.Sprintf("%s/eta/api/v1/get-eta/details?from_lat=%f&from_lon=%f&to_lat=%f&to_lon=%f&mode=%s", baseURL, fromLat, fromLon, toLat, toLon, mode), nil
+
+	case "etaWithGeometry":
+		fromLat := data["FromLat"].(float64)
+		fromLon := data["FromLon"].(float64)
+		toLat := data["ToLat"].(float64)
+		toLon := data["ToLon"].(float64)
+		return fmt.Sprintf("%s/eta/api/v1/get-eta/details/multiple-modes?from_lat=%f&from_lon=%f&to_lat=%f&to_lon=%f", baseURL, fromLat, fromLon, toLat, toLon), nil
+
 	default:
 		return "", fmt.Errorf("unsupported label: %s", label)
 	}

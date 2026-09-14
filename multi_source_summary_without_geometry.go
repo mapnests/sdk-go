@@ -6,11 +6,11 @@ import (
 	"fmt"
 )
 
-type MultiSourceRouteSummaryRequestWithoutGeometry struct {
-	Sources     []Source
-	Destination Destination
-	XRequestID  *string
-}
+// type MultiSourceRouteSummaryWithoutGeometryRequest struct {
+// 	Sources     []Source
+// 	Destination Destination
+// 	XRequestID  *string
+// }
 
 type RouteSummaryWithoutGeometry struct {
 	ID             int     `json:"id"`
@@ -29,7 +29,7 @@ type MultiSourceRouteSummaryWithoutGeometryResponse struct {
 	Status  bool                                      `json:"status"`
 }
 
-func (s *client) MultiSourceRouteSummaryWithoutGeometry(ctx context.Context, request MultiSourceRouteSummaryRequestWithoutGeometry) (*MultiSourceRouteSummaryWithoutGeometryResponse, error) {
+func (s *client) MultiSourceRouteSummaryWithoutGeometry(ctx context.Context, request MultiSourceRouteSummaryRequest) (*MultiSourceRouteSummaryWithoutGeometryResponse, error) {
 
 	if err := ValidateXRequestID(request.XRequestID); err != nil {
 		return nil, err

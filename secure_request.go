@@ -3,6 +3,7 @@ package sdk
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"time"
@@ -28,13 +29,14 @@ var HTTPMethodMap = map[string]string{
 	"snapToRoad":                             http.MethodPost,
 	"multiStopPoints":                        http.MethodPost,
 	"multiSourceRouteSummaryWithoutGeometry": http.MethodPost,
+	"geocode":                                http.MethodGet,
+	"etaWithoutGeometryByMode":               http.MethodGet,
+	"etaWithGeometryByMode":                  http.MethodGet,
+	"etaWithGeometry":                        http.MethodGet,
 }
 
 var token string
 
-// XRequestIDFromJSON extracts the XRequestID field from a request's marshaled
-// JSON so it can be forwarded as the x-request-id header. It returns an empty
-// string when the field is absent, null, or the JSON can't be parsed.
 func XRequestIDFromJSON(jsonRequest string) string {
 	var data map[string]interface{}
 	if err := json.Unmarshal([]byte(jsonRequest), &data); err != nil {
@@ -61,6 +63,7 @@ func performSecureRequest(label string, apiKey string, origin string, timeoutMs 
 		return SecureResult{false, 0, "", err.Error()}
 	}
 
+	fmt.Println("URL:", urlStr)
 	method := HTTPMethodMap[label]
 	if method == "" {
 		method = http.MethodGet

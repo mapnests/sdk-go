@@ -20,13 +20,6 @@ type SearchByRadiusRequest struct {
 
 func (s *client) SearchByRadius(ctx context.Context, request SearchByRadiusRequest) (*SearchResponse, error) {
 
-	if isUnderMaintenance("SearchByRadius") {
-		return &SearchResponse{
-			Message: "SearchByRadius service is under maintenance",
-			Status:  false,
-		}, nil
-	}
-
 	if err := ValidateXRequestID(request.XRequestID); err != nil {
 		return nil, err
 	}

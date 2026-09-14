@@ -35,13 +35,6 @@ type GeocodeData struct {
 
 func (s *client) Geocode(ctx context.Context, request GeocodeRequest) (*GeocodeResponse, error) {
 
-	if isUnderMaintenance("Geocode") {
-		return &GeocodeResponse{
-			Message: "Geocode service is under maintenance",
-			Status:  false,
-		}, nil
-	}
-
 	if err := ValidateXRequestID(request.XRequestID); err != nil {
 		return nil, err
 	}

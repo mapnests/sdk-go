@@ -16,6 +16,8 @@ const (
 
 	AutocompleteMaxLimit  = 20
 	AutocompleteMaxRadius = 5000
+
+	ETAMaxRoutes = 5
 )
 
 var (

@@ -57,13 +57,6 @@ type SearchData struct {
 
 func (s *client) Search(ctx context.Context, request SearchRequest) (*SearchResponse, error) {
 
-	if isUnderMaintenance("Search") {
-		return &SearchResponse{
-			Message: "Search service is under maintenance",
-			Status:  false,
-		}, nil
-	}
-
 	if err := ValidateLatLonPtr(request.Lat, request.Lon); err != nil {
 		return nil, err
 	}
