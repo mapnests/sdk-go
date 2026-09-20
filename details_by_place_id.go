@@ -41,11 +41,9 @@ type DetailsByPlaceIDResponse struct {
 }
 
 func (s *client) DetailsByPlaceID(ctx context.Context, request DetailsByPlaceIDRequest) (*DetailsByPlaceIDResponse, error) {
-	if isUnderMaintenance("DetailsByPlaceID") {
-		return &DetailsByPlaceIDResponse{
-			Message: "DetailsByPlaceID service is under maintenance",
-			Status:  false,
-		}, nil
+
+	if err := ValidateXRequestID(request.XRequestID); err != nil {
+		return nil, err
 	}
 
 	body, err := s.request("detailsByPlaceId", request)

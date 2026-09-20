@@ -87,6 +87,10 @@ type Waypoint struct {
 
 func (s *client) DistanceMatrixDetails(ctx context.Context, request DistanceMatrixDetailsRequest) (*DistanceMatrixDetailsResponse, error) {
 
+	if err := ValidateXRequestID(request.XRequestID); err != nil {
+		return nil, err
+	}
+
 	err := ValidateLatLon(request.OriginLat, request.OriginLon)
 	if err != nil {
 		return nil, err

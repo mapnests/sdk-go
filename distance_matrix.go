@@ -25,6 +25,10 @@ type DistanceMatrixResponse struct {
 }
 
 func (s *client) DistanceMatrix(ctx context.Context, request DistanceMatrixRequest) (*DistanceMatrixResponse, error) {
+	if err := ValidateXRequestID(request.XRequestID); err != nil {
+		return nil, err
+	}
+
 	err := ValidateLatLon(request.OriginLat, request.OriginLon)
 	if err != nil {
 		return nil, err

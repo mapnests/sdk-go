@@ -7,14 +7,15 @@ import (
 )
 
 type SearchRequest struct {
-	Query           string
-	Lat             *float64
-	Lon             *float64
-	Radius          *int64
-	Page            *int64
-	Limit           *int64
-	ActiveLocations bool
-	XRequestID      *string
+	Query            string
+	Lat              *float64
+	Lon              *float64
+	Radius           *int64
+	Page             *int64
+	Limit            *int64
+	ActiveLocations  bool
+	AcceptedLanguage *string
+	XRequestID       *string
 }
 
 type SearchResponse struct {
@@ -56,11 +57,28 @@ type SearchData struct {
 
 func (s *client) Search(ctx context.Context, request SearchRequest) (*SearchResponse, error) {
 
-	if isUnderMaintenance("Search") {
-		return &SearchResponse{
-			Message: "Search service is under maintenance",
-			Status:  false,
-		}, nil
+	if err := ValidateLatLonPtr(request.Lat, request.Lon); err != nil {
+		return nil, err
+	}
+
+	if err := ValidateLimit(request.Limit, SearchMaxLimit); err != nil {
+		return nil, err
+	}
+
+	if err := ValidateRadiusPtr(request.Radius, SearchMaxRadius); err != nil {
+		return nil, err
+	}
+
+	if err := ValidateRadiusRequiresLatLon(request.Radius, request.Lat, request.Lon); err != nil {
+		return nil, err
+	}
+
+	if err := ValidateXRequestID(request.XRequestID); err != nil {
+		return nil, err
+	}
+
+	if err := ValidateAcceptedLanguage(request.AcceptedLanguage); err != nil {
+		return nil, err
 	}
 
 	normalizedQuery, err := ValidateAndNormalizeQuery(request.Query)

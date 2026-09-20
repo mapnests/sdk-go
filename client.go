@@ -17,6 +17,12 @@ type Client interface {
 	DetailsByPlaceID(ctx context.Context, request DetailsByPlaceIDRequest) (*DetailsByPlaceIDResponse, error)
 	SnapToRoad(ctx context.Context, request SnapToRoadRequest) (*SnapToRoadResponse, error)
 	MultiStopPoints(ctx context.Context, request MultiStopPointsRequest) (*MultiStopPointsResponse, error)
+	Geocode(ctx context.Context, request GeocodeRequest) (*GeocodeResponse, error)
+	MultiSourceRouteSummaryWithoutGeometry(ctx context.Context, request MultiSourceRouteSummaryRequest) (*MultiSourceRouteSummaryWithoutGeometryResponse, error)
+	EtaWithoutGeometryByMode(ctx context.Context, request ETAByModeRequest) (*EtaWithoutGeometryByModeResponse, error)
+	EtaWithGeometryByMode(ctx context.Context, request ETAWithGeometryByModeRequest) (*EtaWithGeometryByModeResponse, error)
+	EtaWithGeometry(ctx context.Context, request ETAsRequest) (*ETAsResponse, error)
+	EtaMultiStoppage(ctx context.Context, request ETAMultipleStoppageRequest) (*ETAMultipleStoppageResponse, error)
 }
 
 type client struct {

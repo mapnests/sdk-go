@@ -1,0 +1,7 @@
+core.c
+core.h
+.claude
+.vscode
+docs
+clib/Makefile
+CHANGELOG.md

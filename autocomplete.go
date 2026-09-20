@@ -7,12 +7,14 @@ import (
 )
 
 type AutoCompleteRequest struct {
-	Query      string
-	ActiveZone *bool
-	Lat        *float64
-	Lon        *float64
-	Limit      *int64
-	XRequestID *string
+	Query            string
+	ActiveZone       *bool
+	Lat              *float64
+	Lon              *float64
+	Limit            *int64
+	Radius           *int64
+	AcceptedLanguage *string
+	XRequestID       *string
 }
 
 type AutoCompleteResponse struct {
@@ -31,6 +33,26 @@ type ResponseData struct {
 func (s *client) Autocomplete(ctx context.Context, request AutoCompleteRequest) (*AutoCompleteResponse, error) {
 	err := ValidateLatLonPtr(request.Lat, request.Lon)
 	if err != nil {
+		return nil, err
+	}
+
+	if err := ValidateXRequestID(request.XRequestID); err != nil {
+		return nil, err
+	}
+
+	if err := ValidateAcceptedLanguage(request.AcceptedLanguage); err != nil {
+		return nil, err
+	}
+
+	if err := ValidateLimit(request.Limit, AutocompleteMaxLimit); err != nil {
+		return nil, err
+	}
+
+	if err := ValidateRadiusPtr(request.Radius, AutocompleteMaxRadius); err != nil {
+		return nil, err
+	}
+
+	if err := ValidateRadiusRequiresLatLon(request.Radius, request.Lat, request.Lon); err != nil {
 		return nil, err
 	}
 

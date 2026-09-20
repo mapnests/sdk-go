@@ -39,6 +39,10 @@ type MultiStopPointsResponse struct {
 
 func (s *client) MultiStopPoints(ctx context.Context, request MultiStopPointsRequest) (*MultiStopPointsResponse, error) {
 
+	if err := ValidateXRequestID(request.XRequestID); err != nil {
+		return nil, err
+	}
+
 	if err := ValidateLatLon(request.Src.Lat, request.Src.Lon); err != nil {
 		return nil, err
 	}

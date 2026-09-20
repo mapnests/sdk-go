@@ -63,6 +63,10 @@ type PairWiseRouteSummaryResponse struct {
 }
 
 func (s *client) PairWiseRouteSummary(ctx context.Context, request PairWiseRouteSummaryRequest) (*PairWiseRouteSummaryResponse, error) {
+	if err := ValidateXRequestID(request.XRequestID); err != nil {
+		return nil, err
+	}
+
 	for _, pair := range request.Pairs {
 		if err := ValidateLatLon(pair.Src.Lat, pair.Src.Lon); err != nil {
 			return nil, err

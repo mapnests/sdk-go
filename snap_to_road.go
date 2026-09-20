@@ -7,10 +7,11 @@ import (
 )
 
 type SnapToRoadRequest struct {
-	Mode       Mode
-	Latitude   float64
-	Longitude  float64
-	XRequestID *string
+	Mode                Mode
+	Latitude            float64
+	Longitude           float64
+	NumberOfNearestRoad *int32
+	XRequestID          *string
 }
 
 type SnapToRoadWaypoint struct {
@@ -31,14 +32,11 @@ type SnapToRoadResponse struct {
 
 func (s *client) SnapToRoad(ctx context.Context, request SnapToRoadRequest) (*SnapToRoadResponse, error) {
 
-	if isUnderMaintenance("SnapToRoad") {
-		return &SnapToRoadResponse{
-			Message: "SnapToRoad service is under maintenance",
-			Status:  false,
-		}, nil
+	if err := ValidateLatLon(request.Latitude, request.Longitude); err != nil {
+		return nil, err
 	}
 
-	if err := ValidateLatLon(request.Latitude, request.Longitude); err != nil {
+	if err := ValidateXRequestID(request.XRequestID); err != nil {
 		return nil, err
 	}
 
