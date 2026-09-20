@@ -6,13 +6,29 @@ import (
 	"fmt"
 )
 
-type EtaWithGeometryByModeResponse struct {
-	Status  bool      `json:"status"`
-	Message string    `json:"message"`
-	Data    RouteData `json:"data"`
+type ETAWithGeometryByModeRequest struct {
+	FromLat    float64
+	FromLon    float64
+	ToLat      float64
+	ToLon      float64
+	Mode       Mode
+	TripId     string
+	XRequestID *string
 }
 
-func (s *client) EtaWithGeometryByMode(ctx context.Context, request ETAByModeRequest) (*EtaWithGeometryByModeResponse, error) {
+type ETARouteData struct {
+	Distance  float64    `json:"distance"`
+	Duration  float64    `json:"duration"`
+	Geometry  string     `json:"geometry"`
+	Waypoints []Waypoint `json:"waypoints"`
+}
+type EtaWithGeometryByModeResponse struct {
+	Status  bool         `json:"status"`
+	Message string       `json:"message"`
+	Data    ETARouteData `json:"data"`
+}
+
+func (s *client) EtaWithGeometryByMode(ctx context.Context, request ETAWithGeometryByModeRequest) (*EtaWithGeometryByModeResponse, error) {
 	if err := ValidateLatLon(request.FromLat, request.FromLon); err != nil {
 		return nil, err
 	}
@@ -25,7 +41,7 @@ func (s *client) EtaWithGeometryByMode(ctx context.Context, request ETAByModeReq
 		return nil, err
 	}
 
-	if err := ValidateLimit(request.NoOfRoutes, ETAMaxRoutes); err != nil {
+	if err := ValidateTripID(request.TripId); err != nil {
 		return nil, err
 	}
 

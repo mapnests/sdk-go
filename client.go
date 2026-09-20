@@ -20,8 +20,9 @@ type Client interface {
 	Geocode(ctx context.Context, request GeocodeRequest) (*GeocodeResponse, error)
 	MultiSourceRouteSummaryWithoutGeometry(ctx context.Context, request MultiSourceRouteSummaryRequest) (*MultiSourceRouteSummaryWithoutGeometryResponse, error)
 	EtaWithoutGeometryByMode(ctx context.Context, request ETAByModeRequest) (*EtaWithoutGeometryByModeResponse, error)
-	EtaWithGeometryByMode(ctx context.Context, request ETAByModeRequest) (*EtaWithGeometryByModeResponse, error)
+	EtaWithGeometryByMode(ctx context.Context, request ETAWithGeometryByModeRequest) (*EtaWithGeometryByModeResponse, error)
 	EtaWithGeometry(ctx context.Context, request ETAsRequest) (*ETAsResponse, error)
+	EtaMultiStoppage(ctx context.Context, request ETAMultipleStoppageRequest) (*ETAMultipleStoppageResponse, error)
 }
 
 type client struct {

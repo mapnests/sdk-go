@@ -14,10 +14,17 @@ type ETAsRequest struct {
 	XRequestID *string
 }
 
+type ETAModeData struct {
+	Distance  float64    `json:"distance"`
+	Duration  float64    `json:"duration"`
+	Geometry  string     `json:"geometry"`
+	Waypoints []Waypoint `json:"waypoints"`
+}
+
 type ETAsModesData struct {
-	Car        EtaWithGeometryByModeResponse `json:"car"`
-	CNG        EtaWithGeometryByModeResponse `json:"cng"`
-	Motorcycle EtaWithGeometryByModeResponse `json:"motorcycle"`
+	Car        ETAModeData `json:"car"`
+	CNG        ETAModeData `json:"cng"`
+	Motorcycle ETAModeData `json:"motorcycle"`
 }
 
 type ETAsResponse struct {
