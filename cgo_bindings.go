@@ -1,4 +1,10 @@
 package sdk
+
+/*
+#cgo linux,amd64 LDFLAGS: -L${SRCDIR}/clib -lcore -l:libcurl.so.4 -lcrypto
+#include "clib/core.h"
+#include <stdlib.h>
+*/
 import "C"
 import (
 	"encoding/json"
