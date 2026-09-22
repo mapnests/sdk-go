@@ -32,6 +32,7 @@ A secure and efficient Go SDK for the **Mapnests Platform**, enabling powerful g
 
   * [Distance Matrix](#distance-matrix)
   * [Distance Matrix Details](#distance-matrix-details)
+  * [Pairwise Distance Matrix](#pairwise-distance-matrix)
   * [Pairwise Route Summary](#pairwise-route-summary)
   * [Multi Source Route Summary](#multi-source-route-summary)
   * [Search](#search)
@@ -43,7 +44,7 @@ A secure and efficient Go SDK for the **Mapnests Platform**, enabling powerful g
   * [Multi Stop Point](#multi-stop-point)
   * [Multi Source Route Summary Without Geometry](#multi-source-route-summary-without-geometry)
   * [Geocode](#geocode)
-  * [ETA With Geometry](#eta-with-geometry)
+  * [Eta Without Stoppage](#eta-without-stoppage)
   * [ETA With Geometry By Mode](#eta-with-geometry-by-mode)
   * [ETA Without Geometry By Mode](#eta-without-geometry-by-mode)
   * [ETA Multiple Stoppage](#eta-multiple-stoppage)
@@ -175,6 +176,55 @@ client.DistanceMatrixDetails(ctx, mapnests.DistanceMatrixDetailsRequest{
 ```
 
 📘 **For detailed documentation on all response fields (e.g., `routes`, `legs`, `steps`, `maneuver`, etc.), check the [Distance Matrix Response Reference](docs/distance_matrix_details.md).**
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Pairwise Distance Matrix
+
+<a name="pairwise-distance-matrix"></a>
+
+> Calculates distance and ETA for multiple origin-destination pairs in a single request, without route geometry. Results can be sorted by distance or ETA using the `Sort` parameter.
+
+**Example Input:**
+
+```go
+res, err := client.PairwiseDistanceMatrix(ctx, mapnests.PairwiseDistanceMatrixRequest{
+    Mode: mapnests.TravelModeWalking,
+    Routes: []mapnests.PairwiseDistanceMatrixRoute{
+        {ID: 1, Origin: mapnests.Coordinate{Lat: 23.81183142056928, Lon: 90.41966658048152}, Destination: mapnests.Coordinate{Lat: 23.81011947054907, Lon: 90.42197475156428}},
+        {ID: 2, Origin: mapnests.Coordinate{Lat: 23.81284142056928, Lon: 90.41969658048151}, Destination: mapnests.Coordinate{Lat: 23.81041947054907, Lon: 90.42107475156428}},
+    },
+    Sort: mapnests.SortDistanceInMetresAsc,
+})
+if err != nil {
+    return err
+}
+resJSON, _ := json.MarshalIndent(res, "", "  ")
+fmt.Println("✅ Pairwise Distance Matrix Response result:\n" + string(resJSON))
+return nil
+```
+
+**Example Output:**
+
+```json
+Pairwise Distance Matrix Response result:
+{
+  "status": true,
+  "message": "Success",
+  "data": [
+    {
+      "id": 2,
+      "distanceInMetres": 359.8,
+      "etaInSeconds": 259.1
+    },
+    {
+      "id": 1,
+      "distanceInMetres": 639.4,
+      "etaInSeconds": 460.2
+    }
+  ]
+}
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -867,25 +917,25 @@ client.Geocode(ctx, mapnests.GeocodeRequest{
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### ETA With Geometry
+### ETA WithOut Stoppage
 
-<a name="eta-with-geometry"></a>
+<a name="eta-without-stoppage"></a>
 
 > Calculates distance, ETA, and route geometry for a single source-destination pair across all travel modes (car, cng, motorcycle) in one request.
 
 **Example Input:**
 
 ```go
-res, err := client.EtaWithGeometry(ctx, mapnests.ETAsRequest{
+res, err := client.EtaWithoutStoppage(ctx, mapnests.ETAsRequest{
 	FromLat: 23.759248321873432,
 	FromLon: 90.41691646513276,
 	ToLat:   23.770148309864418,
 	ToLon:   90.40842674496818,
 })
 if err != nil {
-	log.Fatal("EtaWithGeometry error:", err)
+	log.Fatal("ETA WithOut Stoppage error:", err)
 }
-fmt.Println("EtaWithGeometry result:", *res)
+fmt.Println("ETA WithOut Stoppage result:", *res)
 ```
 
 **Example Output:**

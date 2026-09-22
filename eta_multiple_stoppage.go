@@ -41,11 +41,7 @@ type ModeETAData struct {
 	TotalDuration float64     `json:"total_duration"`
 }
 
-type ETAMultipleStoppageData struct {
-	Car        *ModeETAData `json:"car,omitempty"`
-	Motorcycle *ModeETAData `json:"motorcycle,omitempty"`
-	CNG        *ModeETAData `json:"cng,omitempty"`
-}
+type ETAMultipleStoppageData map[Mode]*ModeETAData
 
 type ETAMultipleStoppageResponse struct {
 	Status  bool                    `json:"status"`
