@@ -21,19 +21,15 @@ type ETAModeData struct {
 	Waypoints []Waypoint `json:"waypoints"`
 }
 
-type ETAsModesData struct {
-	Car        ETAModeData `json:"car"`
-	CNG        ETAModeData `json:"cng"`
-	Motorcycle ETAModeData `json:"motorcycle"`
-}
+type ETAWithoutStoppageData map[Mode]*ETAModeData
 
 type ETAsResponse struct {
 	Status  bool          `json:"status"`
 	Message string        `json:"message"`
-	Data    ETAsModesData `json:"data"`
+	Data    ETAWithoutStoppageData `json:"data"`
 }
 
-func (s *client) EtaWithGeometry(ctx context.Context, request ETAsRequest) (*ETAsResponse, error) {
+func (s *client) EtaWithoutStoppage(ctx context.Context, request ETAsRequest) (*ETAsResponse, error) {
 	if err := ValidateLatLon(request.FromLat, request.FromLon); err != nil {
 		return nil, err
 	}

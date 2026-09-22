@@ -21,8 +21,9 @@ type Client interface {
 	MultiSourceRouteSummaryWithoutGeometry(ctx context.Context, request MultiSourceRouteSummaryRequest) (*MultiSourceRouteSummaryWithoutGeometryResponse, error)
 	EtaWithoutGeometryByMode(ctx context.Context, request ETAByModeRequest) (*EtaWithoutGeometryByModeResponse, error)
 	EtaWithGeometryByMode(ctx context.Context, request ETAWithGeometryByModeRequest) (*EtaWithGeometryByModeResponse, error)
-	EtaWithGeometry(ctx context.Context, request ETAsRequest) (*ETAsResponse, error)
+	EtaWithoutStoppage(ctx context.Context, request ETAsRequest) (*ETAsResponse, error)
 	EtaMultiStoppage(ctx context.Context, request ETAMultipleStoppageRequest) (*ETAMultipleStoppageResponse, error)
+	PairwiseDistanceMatrix(ctx context.Context, request PairwiseDistanceMatrixRequest) (*PairwiseDistanceMatrixResponse, error)
 }
 
 type client struct {

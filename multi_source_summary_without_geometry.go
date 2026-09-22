@@ -6,17 +6,10 @@ import (
 	"fmt"
 )
 
-// type MultiSourceRouteSummaryWithoutGeometryRequest struct {
-// 	Sources     []Source
-// 	Destination Destination
-// 	XRequestID  *string
-// }
-
 type RouteSummaryWithoutGeometry struct {
 	ID             int     `json:"id"`
 	DistanceMeters float64 `json:"distanceInMeters"`
 	EtaSeconds     float64 `json:"etaInSeconds"`
-	Reachable      bool    `json:"reachable"`
 }
 
 type DistanceMatrixResponseDataWithoutGeometry struct {
