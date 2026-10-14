@@ -42,7 +42,7 @@ func (s *client) EtaWithoutStoppage(ctx context.Context, request ETAsRequest) (*
 		return nil, err
 	}
 
-	body, err := s.request("etaWithGeometry", request)
+	body, err := s.request("etaWithoutStoppage", request)
 	if err != nil {
 		return nil, err
 	}
