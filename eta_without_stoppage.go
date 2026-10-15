@@ -7,11 +7,11 @@ import (
 )
 
 type ETAsRequest struct {
-	FromLat    float64
-	FromLon    float64
-	ToLat      float64
-	ToLon      float64
-	XRequestID *string
+	FromLat     float64
+	FromLon     float64
+	ToLat       float64
+	ToLon       float64
+	Traceparent *string
 }
 
 type ETAModeData struct {
@@ -24,8 +24,8 @@ type ETAModeData struct {
 type ETAWithoutStoppageData map[Mode]*ETAModeData
 
 type ETAsResponse struct {
-	Status  bool          `json:"status"`
-	Message string        `json:"message"`
+	Status  bool                   `json:"status"`
+	Message string                 `json:"message"`
 	Data    ETAWithoutStoppageData `json:"data"`
 }
 
@@ -35,10 +35,6 @@ func (s *client) EtaWithoutStoppage(ctx context.Context, request ETAsRequest) (*
 	}
 
 	if err := ValidateLatLon(request.ToLat, request.ToLon); err != nil {
-		return nil, err
-	}
-
-	if err := ValidateXRequestID(request.XRequestID); err != nil {
 		return nil, err
 	}
 

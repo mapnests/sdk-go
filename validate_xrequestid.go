@@ -7,30 +7,37 @@ import (
 )
 
 var (
-	ErrInvalidXRequestID = errors.New("x-request-id must be a valid W3C traceparent value: <2 hex version>-<32 hex trace-id>-<16 hex parent-id>-<2 hex flags>, e.g. 00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01")
+	traceparentRegex = regexp.MustCompile(`^([0-9a-f]{2})-([0-9a-f]{32})-([0-9a-f]{16})-([0-9a-f]{2})$`)
 
-	traceparentRegex = regexp.MustCompile(`^[0-9a-f]{2}-[0-9a-f]{32}-[0-9a-f]{16}-[0-9a-f]{2}$`)
+	errTraceparentFormat   = errors.New("must be a valid W3C traceparent header (version-traceid-parentid-traceflags).")
+	errTraceparentVersion  = errors.New("version must not be ff.")
+	errTraceparentTraceID  = errors.New("traceid must not be all zeros.")
+	errTraceparentParentID = errors.New("parentid must not be all zeros.")
 
-	invalidTraceparentVersion = "ff"
-	zeroTraceID               = strings.Repeat("0", 32)
-	zeroParentID              = strings.Repeat("0", 16)
+	zeroTraceID  = strings.Repeat("0", 32)
+	zeroParentID = strings.Repeat("0", 16)
 )
 
-func ValidateXRequestID(xRequestID *string) error {
-	if xRequestID == nil {
+// ValidateTraceparent returns a descriptive error if the value is not a valid
+// W3C traceparent, or nil if it is valid (or nil).
+func ValidateTraceparent(traceparent *string) error {
+	if traceparent == nil {
 		return nil
 	}
 
-	value := *xRequestID
-	if !traceparentRegex.MatchString(value) {
-		return ErrInvalidXRequestID
+	match := traceparentRegex.FindStringSubmatch(*traceparent)
+	if match == nil {
+		return errTraceparentFormat
 	}
 
-	parts := strings.Split(value, "-")
-	version, traceID, parentID := parts[0], parts[1], parts[2]
-
-	if version == invalidTraceparentVersion || traceID == zeroTraceID || parentID == zeroParentID {
-		return ErrInvalidXRequestID
+	version, traceID, parentID := match[1], match[2], match[3]
+	switch {
+	case version == "ff":
+		return errTraceparentVersion
+	case traceID == zeroTraceID:
+		return errTraceparentTraceID
+	case parentID == zeroParentID:
+		return errTraceparentParentID
 	}
 
 	return nil

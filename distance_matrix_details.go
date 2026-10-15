@@ -7,12 +7,12 @@ import (
 )
 
 type DistanceMatrixDetailsRequest struct {
-	OriginLat  float64
-	OriginLon  float64
-	DestLat    float64
-	DestLon    float64
-	Mode       Mode
-	XRequestID *string
+	OriginLat   float64
+	OriginLon   float64
+	DestLat     float64
+	DestLon     float64
+	Mode        Mode
+	Traceparent *string
 }
 
 type DistanceMatrixDetailsResponse struct {
@@ -87,10 +87,6 @@ type Waypoint struct {
 
 func (s *client) DistanceMatrixDetails(ctx context.Context, request DistanceMatrixDetailsRequest) (*DistanceMatrixDetailsResponse, error) {
 
-	if err := ValidateXRequestID(request.XRequestID); err != nil {
-		return nil, err
-	}
-
 	err := ValidateLatLon(request.OriginLat, request.OriginLon)
 	if err != nil {
 		return nil, err
@@ -104,11 +100,11 @@ func (s *client) DistanceMatrixDetails(ctx context.Context, request DistanceMatr
 	if err != nil {
 		return nil, err
 	}
-
+	
 	var response DistanceMatrixDetailsResponse
 	if err := json.Unmarshal(body, &response); err != nil {
 		return nil, fmt.Errorf("error unmarshaling DistanceMatrixDetails response: %w", err)
 	}
-
+	
 	return &response, nil
 }

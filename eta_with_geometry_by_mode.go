@@ -7,13 +7,13 @@ import (
 )
 
 type ETAWithGeometryByModeRequest struct {
-	FromLat    float64
-	FromLon    float64
-	ToLat      float64
-	ToLon      float64
-	Mode       Mode
-	TripId     string
-	XRequestID *string
+	FromLat     float64
+	FromLon     float64
+	ToLat       float64
+	ToLon       float64
+	Mode        Mode
+	TripId      string
+	Traceparent *string
 }
 
 type ETARouteData struct {
@@ -42,10 +42,6 @@ func (s *client) EtaWithGeometryByMode(ctx context.Context, request ETAWithGeome
 	}
 
 	if err := ValidateTripID(request.TripId); err != nil {
-		return nil, err
-	}
-
-	if err := ValidateXRequestID(request.XRequestID); err != nil {
 		return nil, err
 	}
 

@@ -7,10 +7,10 @@ import (
 )
 
 type MultiStopPointDetailsWithGeometryRequest struct {
-	Src        Coordinate
-	StopPoints []StopPoint
-	Mode       Mode
-	XRequestID *string
+	Src         Coordinate
+	StopPoints  []StopPoint
+	Mode        Mode
+	Traceparent *string
 }
 
 type MultiStopPointDetailsWithGeometryRoute struct {
@@ -33,7 +33,7 @@ type MultiStopPointDetailsWithGeometryResponse struct {
 }
 
 func (s *client) MultiStopPointDetailsWithGeometry(ctx context.Context, request MultiStopPointDetailsWithGeometryRequest) (*MultiStopPointDetailsWithGeometryResponse, error) {
-	
+
 	if err := ValidateLatLon(request.Src.Lat, request.Src.Lon); err != nil {
 		return nil, err
 	}

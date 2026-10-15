@@ -23,11 +23,6 @@ type MultiSourceRouteSummaryWithoutGeometryResponse struct {
 }
 
 func (s *client) MultiSourceRouteSummaryWithoutGeometry(ctx context.Context, request MultiSourceRouteSummaryRequest) (*MultiSourceRouteSummaryWithoutGeometryResponse, error) {
-
-	if err := ValidateXRequestID(request.XRequestID); err != nil {
-		return nil, err
-	}
-
 	for _, src := range request.Sources {
 		if err := ValidateLatLon(src.Lat, src.Lon); err != nil {
 			return nil, err

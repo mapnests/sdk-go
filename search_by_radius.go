@@ -15,14 +15,10 @@ type SearchByRadiusRequest struct {
 	Page             *int64
 	Limit            *int64
 	AcceptedLanguage *string
-	XRequestID       *string
+	Traceparent      *string
 }
 
 func (s *client) SearchByRadius(ctx context.Context, request SearchByRadiusRequest) (*SearchResponse, error) {
-
-	if err := ValidateXRequestID(request.XRequestID); err != nil {
-		return nil, err
-	}
 
 	if err := ValidateAcceptedLanguage(request.AcceptedLanguage); err != nil {
 		return nil, err

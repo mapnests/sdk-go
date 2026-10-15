@@ -21,7 +21,7 @@ type Destination struct {
 type MultiSourceRouteSummaryRequest struct {
 	Sources     []Source
 	Destination Destination
-	XRequestID  *string
+	Traceparent *string
 }
 
 type RouteSummary struct {
@@ -42,10 +42,6 @@ type MultiSourceRouteSummaryResponse struct {
 }
 
 func (s *client) MultiSourceRouteSummary(ctx context.Context, request MultiSourceRouteSummaryRequest) (*MultiSourceRouteSummaryResponse, error) {
-
-	if err := ValidateXRequestID(request.XRequestID); err != nil {
-		return nil, err
-	}
 
 	for _, src := range request.Sources {
 		if err := ValidateLatLon(src.Lat, src.Lon); err != nil {

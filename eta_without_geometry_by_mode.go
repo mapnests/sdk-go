@@ -7,13 +7,13 @@ import (
 )
 
 type ETAByModeRequest struct {
-	FromLat    float64
-	FromLon    float64
-	ToLat      float64
-	ToLon      float64
-	Mode       Mode
-	NoOfRoutes *int64
-	XRequestID *string
+	FromLat     float64
+	FromLon     float64
+	ToLat       float64
+	ToLon       float64
+	Mode        Mode
+	NoOfRoutes  *int64
+	Traceparent *string
 }
 
 type EtaWithoutGeometryByModeData struct {
@@ -44,10 +44,6 @@ func (s *client) EtaWithoutGeometryByMode(ctx context.Context, request ETAByMode
 	}
 
 	if err := ValidateLimit(request.NoOfRoutes, ETAMaxRoutes); err != nil {
-		return nil, err
-	}
-
-	if err := ValidateXRequestID(request.XRequestID); err != nil {
 		return nil, err
 	}
 

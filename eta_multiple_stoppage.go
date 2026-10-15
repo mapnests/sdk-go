@@ -18,12 +18,12 @@ type ETAStoppage struct {
 }
 
 type ETAMultipleStoppageRequest struct {
-	Source     LatLng        `json:"source"`
-	DropOff    LatLng        `json:"dropoff"`
-	Stoppages  []ETAStoppage `json:"stoppages"`
-	Modes      []Mode        `json:"modes"`
-	TripId     string        `json:"trip_id"`
-	XRequestID *string       `json:"XRequestID"`
+	Source      LatLng        `json:"source"`
+	DropOff     LatLng        `json:"dropoff"`
+	Stoppages   []ETAStoppage `json:"stoppages"`
+	Modes       []Mode        `json:"modes"`
+	TripId      string        `json:"trip_id"`
+	Traceparent *string       `json:"Traceparent"`
 }
 
 type HopsData struct {
@@ -72,10 +72,6 @@ func (s *client) EtaMultiStoppage(ctx context.Context, request ETAMultipleStoppa
 	}
 
 	if err := ValidateTripID(request.TripId); err != nil {
-		return nil, err
-	}
-
-	if err := ValidateXRequestID(request.XRequestID); err != nil {
 		return nil, err
 	}
 

@@ -15,7 +15,7 @@ type SearchRequest struct {
 	Limit            *int64
 	ActiveLocations  bool
 	AcceptedLanguage *string
-	XRequestID       *string
+	Traceparent      *string
 }
 
 type SearchResponse struct {
@@ -70,10 +70,6 @@ func (s *client) Search(ctx context.Context, request SearchRequest) (*SearchResp
 	}
 
 	if err := ValidateRadiusRequiresLatLon(request.Radius, request.Lat, request.Lon); err != nil {
-		return nil, err
-	}
-
-	if err := ValidateXRequestID(request.XRequestID); err != nil {
 		return nil, err
 	}
 
