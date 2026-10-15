@@ -22,6 +22,8 @@ Map Nests
 
 A secure and efficient Go SDK for the **Mapnests Platform**, enabling powerful geospatial capabilities such as **Search (Geocoding)**, **Reverse (Reverse Geocoding)**, **Distance Matrix**, **Autocomplete** and **Autocomplet Without Zone**.
 
+> **Trace ID support:** Every request accepts an optional `traceparent` parameter (sent as the `Traceparent` HTTP header). Use it to correlate SDK calls with your own request logs and traces. If omitted, the header is sent as an empty string. When provided, it must follow the [W3C `traceparent`](https://www.w3.org/TR/trace-context/#traceparent-header) format: `version-traceid-parentid-traceflags` (e.g. `00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01`).
+
 ---
 
 ## 📚 Table of Contents
@@ -868,7 +870,7 @@ client.Geocode(ctx, mapnests.GeocodeRequest{
 	Query: "Uttara, Dhaka",
 })
 
-// Optional parameters: Limit, AcceptedLanguage, XRequestID
+// Optional parameters: Limit, AcceptedLanguage, Traceparent
 limit := int64(5)
 lang := "en"
 client.Geocode(ctx, mapnests.GeocodeRequest{

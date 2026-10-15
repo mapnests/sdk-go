@@ -10,7 +10,7 @@ type GeocodeRequest struct {
 	Query            string
 	Limit            *int64
 	AcceptedLanguage *string
-	XRequestID       *string
+	Traceparent      *string
 }
 
 type GeocodeResponse struct {
@@ -34,10 +34,6 @@ type GeocodeData struct {
 }
 
 func (s *client) Geocode(ctx context.Context, request GeocodeRequest) (*GeocodeResponse, error) {
-
-	if err := ValidateXRequestID(request.XRequestID); err != nil {
-		return nil, err
-	}
 
 	if err := ValidateAcceptedLanguage(request.AcceptedLanguage); err != nil {
 		return nil, err

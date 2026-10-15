@@ -19,13 +19,13 @@ type SecureResult struct {
 	ErrorMessage string
 }
 
-func XRequestIDFromJSON(jsonRequest string) string {
+func TraceparentFromJSON(jsonRequest string) string {
 	var data map[string]interface{}
 	if err := json.Unmarshal([]byte(jsonRequest), &data); err != nil {
 		return ""
 	}
 
-	v, ok := data["XRequestID"]
+	v, ok := data["Traceparent"]
 	if !ok || v == nil {
 		return ""
 	}
@@ -43,7 +43,7 @@ func performSecureRequest(label, apiKey, origin string, timeoutMs int32, jsonReq
 	cKey := C.CString(apiKey)
 	cOrigin := C.CString(origin)
 	cJSON := C.CString(jsonRequest)
-	cReqID := C.CString(XRequestIDFromJSON(jsonRequest))
+	cReqID := C.CString(TraceparentFromJSON(jsonRequest))
 	defer C.free(unsafe.Pointer(cLabel))
 	defer C.free(unsafe.Pointer(cKey))
 	defer C.free(unsafe.Pointer(cOrigin))

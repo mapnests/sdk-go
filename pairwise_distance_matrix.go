@@ -22,10 +22,10 @@ const (
 )
 
 type PairwiseDistanceMatrixRequest struct {
-	Mode       Mode                          `json:"mode"`
-	Routes     []PairwiseDistanceMatrixRoute `json:"routes"`
-	Sort       SortOrder                     `json:"sort"`
-	XRequestID *string
+	Mode        Mode                          `json:"mode"`
+	Routes      []PairwiseDistanceMatrixRoute `json:"routes"`
+	Sort        SortOrder                     `json:"sort"`
+	Traceparent *string
 }
 
 type PairwiseDistanceMatrixResult struct {
@@ -41,9 +41,6 @@ type PairwiseDistanceMatrixResponse struct {
 }
 
 func (s *client) PairwiseDistanceMatrix(ctx context.Context, request PairwiseDistanceMatrixRequest) (*PairwiseDistanceMatrixResponse, error) {
-	if err := ValidateXRequestID(request.XRequestID); err != nil {
-		return nil, err
-	}
 
 	for _, route := range request.Routes {
 		if err := ValidateLatLon(route.Origin.Lat, route.Origin.Lon); err != nil {

@@ -14,7 +14,7 @@ type AutoCompleteRequest struct {
 	Limit            *int64
 	Radius           *int64
 	AcceptedLanguage *string
-	XRequestID       *string
+	Traceparent      *string
 }
 
 type AutoCompleteResponse struct {
@@ -33,10 +33,6 @@ type ResponseData struct {
 func (s *client) Autocomplete(ctx context.Context, request AutoCompleteRequest) (*AutoCompleteResponse, error) {
 	err := ValidateLatLonPtr(request.Lat, request.Lon)
 	if err != nil {
-		return nil, err
-	}
-
-	if err := ValidateXRequestID(request.XRequestID); err != nil {
 		return nil, err
 	}
 

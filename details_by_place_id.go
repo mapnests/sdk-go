@@ -7,8 +7,8 @@ import (
 )
 
 type DetailsByPlaceIDRequest struct {
-	PlaceID    string
-	XRequestID *string
+	PlaceID     string
+	Traceparent *string
 }
 
 type PlaceDetail struct {
@@ -41,10 +41,6 @@ type DetailsByPlaceIDResponse struct {
 }
 
 func (s *client) DetailsByPlaceID(ctx context.Context, request DetailsByPlaceIDRequest) (*DetailsByPlaceIDResponse, error) {
-
-	if err := ValidateXRequestID(request.XRequestID); err != nil {
-		return nil, err
-	}
 
 	body, err := s.request("detailsByPlaceId", request)
 

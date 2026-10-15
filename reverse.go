@@ -10,7 +10,7 @@ type ReverseRequest struct {
 	Lat              float64
 	Lon              float64
 	AcceptedLanguage *string
-	XRequestID       *string
+	Traceparent      *string
 }
 
 type ReverseResponse struct {
@@ -44,10 +44,6 @@ func (s *client) Reverse(ctx context.Context, request ReverseRequest) (*ReverseR
 
 	err := ValidateLatLon(request.Lat, request.Lon)
 	if err != nil {
-		return nil, err
-	}
-
-	if err := ValidateXRequestID(request.XRequestID); err != nil {
 		return nil, err
 	}
 

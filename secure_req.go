@@ -11,6 +11,13 @@ func callSecureRequest(label, apiKey, origin string, timeoutMs int32, request an
 		return 0, "", "", fmt.Errorf("failed to marshal request: %v", err)
 	}
 
+	if tp := TraceparentFromJSON(string(jsonBytes)); tp != "" {
+		if err := ValidateTraceparent(&tp); err != nil {
+			fmt.Printf("Invalid traceparent ignored: %v The request will be sent without it. \n", err)
+			jsonBytes = stripTraceparent(jsonBytes)
+		}
+	}
+
 	result := performSecureRequest(label, apiKey, origin, timeoutMs, string(jsonBytes))
 
 	if !result.Success {
@@ -22,4 +29,18 @@ func callSecureRequest(label, apiKey, origin string, timeoutMs int32, request an
 	}
 
 	return result.StatusCode, result.Response, "", nil
+}
+
+// stripTraceparent removes the Traceparent field so the request is sent without it.
+func stripTraceparent(jsonBytes []byte) []byte {
+	var data map[string]any
+	if err := json.Unmarshal(jsonBytes, &data); err != nil {
+		return jsonBytes
+	}
+	delete(data, "Traceparent")
+	out, err := json.Marshal(data)
+	if err != nil {
+		return jsonBytes
+	}
+	return out
 }

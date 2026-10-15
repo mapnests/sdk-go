@@ -11,7 +11,7 @@ type SnapToRoadRequest struct {
 	Latitude            float64
 	Longitude           float64
 	NumberOfNearestRoad *int32
-	XRequestID          *string
+	Traceparent         *string
 }
 
 type SnapToRoadWaypoint struct {
@@ -33,10 +33,6 @@ type SnapToRoadResponse struct {
 func (s *client) SnapToRoad(ctx context.Context, request SnapToRoadRequest) (*SnapToRoadResponse, error) {
 
 	if err := ValidateLatLon(request.Latitude, request.Longitude); err != nil {
-		return nil, err
-	}
-
-	if err := ValidateXRequestID(request.XRequestID); err != nil {
 		return nil, err
 	}
 
