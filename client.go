@@ -25,6 +25,7 @@ type Client interface {
 	EtaMultiStoppage(ctx context.Context, request ETAMultipleStoppageRequest) (*ETAMultipleStoppageResponse, error)
 	PairwiseDistanceMatrix(ctx context.Context, request PairwiseDistanceMatrixRequest) (*PairwiseDistanceMatrixResponse, error)
 	MultiStopPointDetailsWithGeometry(ctx context.Context, request MultiStopPointDetailsWithGeometryRequest) (*MultiStopPointDetailsWithGeometryResponse, error)
+	StaticMap(ctx context.Context, request StaticMapRequest) (*StaticMapResponse, error)
 }
 
 type client struct {

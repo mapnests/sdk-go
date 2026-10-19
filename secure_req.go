@@ -11,14 +11,17 @@ func callSecureRequest(label, apiKey, origin string, timeoutMs int32, request an
 		return 0, "", "", fmt.Errorf("failed to marshal request: %v", err)
 	}
 
-	if tp := TraceparentFromJSON(string(jsonBytes)); tp != "" {
+	tp := TraceparentFromJSON(string(jsonBytes))
+	if tp != "" {
 		if err := ValidateTraceparent(&tp); err != nil {
 			fmt.Printf("Invalid traceparent ignored: %v The request will be sent without it. \n", err)
-			jsonBytes = stripTraceparent(jsonBytes)
+			tp = ""
 		}
 	}
+	// Traceparent travels as a header, never in the body (strict servers reject unknown fields).
+	jsonBytes = stripTraceparent(jsonBytes)
 
-	result := performSecureRequest(label, apiKey, origin, timeoutMs, string(jsonBytes))
+	result := performSecureRequest(label, apiKey, origin, timeoutMs, string(jsonBytes), tp)
 
 	if !result.Success {
 		errMsg := result.ErrorMessage
