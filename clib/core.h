@@ -1,6 +1,8 @@
 #ifndef MAPNESTS_CORE_H
 #define MAPNESTS_CORE_H
 
+#include <stddef.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -9,6 +11,7 @@ typedef struct {
     int   success;
     int   status_code;
     char *response;
+    size_t response_len;
     char *error_message;
 } SecureResult;
 

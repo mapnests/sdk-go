@@ -38,12 +38,12 @@ func TraceparentFromJSON(jsonRequest string) string {
 	return id
 }
 
-func performSecureRequest(label, apiKey, origin string, timeoutMs int32, jsonRequest string) SecureResult {
+func performSecureRequest(label, apiKey, origin string, timeoutMs int32, jsonRequest, traceparent string) SecureResult {
 	cLabel := C.CString(label)
 	cKey := C.CString(apiKey)
 	cOrigin := C.CString(origin)
 	cJSON := C.CString(jsonRequest)
-	cReqID := C.CString(TraceparentFromJSON(jsonRequest))
+	cReqID := C.CString(traceparent)
 	defer C.free(unsafe.Pointer(cLabel))
 	defer C.free(unsafe.Pointer(cKey))
 	defer C.free(unsafe.Pointer(cOrigin))
@@ -56,7 +56,7 @@ func performSecureRequest(label, apiKey, origin string, timeoutMs int32, jsonReq
 	return SecureResult{
 		Success:      cr.success != 0,
 		StatusCode:   int(cr.status_code),
-		Response:     C.GoString(cr.response),
+		Response:     C.GoStringN(cr.response, C.int(cr.response_len)),
 		ErrorMessage: C.GoString(cr.error_message),
 	}
 }

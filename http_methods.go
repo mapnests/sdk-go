@@ -23,4 +23,5 @@ var HTTPMethodMap = map[string]string{
 	"etaMultipleStoppage":                    http.MethodPost,
 	"pairwiseDistanceMatrix":                 http.MethodPost,
 	"multiStopPointDetailsWithGeometry":      http.MethodPost,
+	"staticMap":                              http.MethodPost,
 }
