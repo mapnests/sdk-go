@@ -24,4 +24,5 @@ var HTTPMethodMap = map[string]string{
 	"pairwiseDistanceMatrix":                 http.MethodPost,
 	"multiStopPointDetailsWithGeometry":      http.MethodPost,
 	"staticMap":                              http.MethodPost,
+	"etaWithMultiSourceMultiStopPoint":       http.MethodPost,
 }
