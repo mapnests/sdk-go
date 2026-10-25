@@ -28,7 +28,7 @@ type StaticMapRequest struct {
 }
 
 type StaticMapResponse struct {
-	Image          []byte  // rendered map image (PNG)
+	ImageBase64    string  // rendered map image (PNG), standard base64; callers decode it
 	DistanceMeters float64 // total length of the polyline
 }
 
@@ -67,7 +67,10 @@ func (s *client) StaticMap(ctx context.Context, request StaticMapRequest) (*Stat
 		return nil, err
 	}
 
-	return &StaticMapResponse{Image: image, DistanceMeters: distance}, nil
+	return &StaticMapResponse{
+		ImageBase64:    base64.StdEncoding.EncodeToString(image),
+		DistanceMeters: distance,
+	}, nil
 }
 
 // PolylineDistance returns the total length in meters of an encoded polyline
