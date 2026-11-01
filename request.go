@@ -1,6 +1,5 @@
 package sdk
 
-
 func (s *client) request(label string, req interface{}) ([]byte, error) {
 
 	status, resp, errMsg, err := callSecureRequest(label, s.apiKey, s.packageName, s.timeoutMs, req)
