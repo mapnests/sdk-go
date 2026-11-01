@@ -12,6 +12,7 @@ import (
 const (
 	defaultPolylinePrecision = 6
 	earthRadiusMeters        = 6371008.8
+	RDPToleranceMeters       = 1.0
 )
 
 var (
@@ -52,15 +53,29 @@ func (s *client) StaticMap(ctx context.Context, request StaticMapRequest) (*Stat
 		}
 		precision = p
 	}
-	request.Precision = strconv.Itoa(precision)
 
+	// Distance is measured on the original points.
 	distance, err := PolylineDistance(request.Polyline, precision)
 	if err != nil {
 		return nil, err
 	}
 
-	// The API expects the polyline base64-encoded; callers pass it raw.
-	request.Polyline = base64.StdEncoding.EncodeToString([]byte(request.Polyline))
+	points, err := DecodePolyline(request.Polyline, precision)
+	if err != nil {
+		return nil, err
+	}
+	// polyline6 -> polyline5; any other precision is kept as is.
+	if precision == defaultPolylinePrecision {
+		precision = 5
+		points, err = DecodePolyline(encodePolyline(points, precision), precision)
+		if err != nil {
+			return nil, err
+		}
+	}
+	request.Precision = strconv.Itoa(precision)
+
+	// The API expects the simplified polyline base64-encoded.
+	request.Polyline = base64.StdEncoding.EncodeToString([]byte(encodePolyline(simplifyPolyline(points, RDPToleranceMeters), precision)))
 
 	image, err := s.request("staticMap", request)
 	if err != nil {
@@ -130,6 +145,65 @@ func decodePolylineValue(s string, i int) (value int64, next int, ok bool) {
 		}
 	}
 	return 0, 0, false
+}
+
+func encodePolyline(points []Coordinate, precision int) string {
+	factor := math.Pow10(precision)
+	var buf []byte
+	var prevLat, prevLon int64
+	for _, p := range points {
+		lat, lon := int64(math.Round(p.Lat*factor)), int64(math.Round(p.Lon*factor))
+		buf = appendPolylineValue(buf, lat-prevLat)
+		buf = appendPolylineValue(buf, lon-prevLon)
+		prevLat, prevLon = lat, lon
+	}
+	return string(buf)
+}
+
+func appendPolylineValue(buf []byte, v int64) []byte {
+	v <<= 1
+	if v < 0 {
+		v = ^v
+	}
+	for ; v >= 0x20; v >>= 5 {
+		buf = append(buf, byte((0x20|(v&0x1f))+63))
+	}
+	return append(buf, byte(v+63))
+}
+
+// simplifyPolyline applies Ramer-Douglas-Peucker with a tolerance in meters.
+func simplifyPolyline(points []Coordinate, toleranceMeters float64) []Coordinate {
+	if len(points) < 3 {
+		return points
+	}
+	first, last := points[0], points[len(points)-1]
+	index, maxDist := 0, 0.0
+	for i := 1; i < len(points)-1; i++ {
+		if d := segmentDistanceMeters(points[i], first, last); d > maxDist {
+			index, maxDist = i, d
+		}
+	}
+	if maxDist <= toleranceMeters {
+		return []Coordinate{first, last}
+	}
+	left := simplifyPolyline(points[:index+1], toleranceMeters)
+	right := simplifyPolyline(points[index:], toleranceMeters)
+	return append(left[:len(left):len(left)], right[1:]...)
+}
+
+// segmentDistanceMeters returns the distance from p to segment a-b, using a
+// local equirectangular projection around a.
+func segmentDistanceMeters(p, a, b Coordinate) float64 {
+	const rad = math.Pi / 180
+	k := math.Cos(a.Lat*rad) * earthRadiusMeters * rad
+	bx, by := (b.Lon-a.Lon)*k, (b.Lat-a.Lat)*earthRadiusMeters*rad
+	px, py := (p.Lon-a.Lon)*k, (p.Lat-a.Lat)*earthRadiusMeters*rad
+	l2 := bx*bx + by*by
+	if l2 == 0 {
+		return haversineMeters(p, a)
+	}
+	t := math.Max(0, math.Min(1, (px*bx+py*by)/l2))
+	return math.Hypot(px-t*bx, py-t*by)
 }
 
 func haversineMeters(a, b Coordinate) float64 {
