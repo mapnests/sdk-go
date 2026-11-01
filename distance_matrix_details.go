@@ -100,11 +100,11 @@ func (s *client) DistanceMatrixDetails(ctx context.Context, request DistanceMatr
 	if err != nil {
 		return nil, err
 	}
-	
+
 	var response DistanceMatrixDetailsResponse
 	if err := json.Unmarshal(body, &response); err != nil {
 		return nil, fmt.Errorf("error unmarshaling DistanceMatrixDetails response: %w", err)
 	}
-	
+
 	return &response, nil
 }

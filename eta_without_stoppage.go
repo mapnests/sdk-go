@@ -12,6 +12,7 @@ type ETAsRequest struct {
 	ToLat       float64
 	ToLon       float64
 	Traceparent *string
+	Modes       []Mode
 }
 
 type ETAModeData struct {
