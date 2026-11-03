@@ -21,7 +21,7 @@ type Destination struct {
 type MultiSourceRouteSummaryRequest struct {
 	Sources     []Source
 	Destination Destination
-	XRequestID  *string
+	Traceparent *string
 }
 
 type RouteSummary struct {

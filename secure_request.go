@@ -3,6 +3,7 @@ package sdk
 import (
 	"bytes"
 	"io"
+	"log"
 	"net/http"
 	"time"
 )
@@ -15,17 +16,27 @@ type SecureResult struct {
 }
 
 var HTTPMethodMap = map[string]string{
-	"reverse":                 http.MethodGet,
-	"search":                  http.MethodGet,
-	"distanceMatrix":          http.MethodGet,
-	"distanceMatrixDetails":   http.MethodGet,
-	"pairWiseRouteSummary":    http.MethodPost,
-	"multiSourceRouteSummary": http.MethodPost,
-	"autocomplete":            http.MethodGet,
-	"searchByRadius":          http.MethodGet,
-	"detailsByPlaceId":        http.MethodGet,
-	"snapToRoad":              http.MethodPost,
-	"multiStopPoints":         http.MethodPost,
+	"reverse":                                http.MethodGet, //Geo Map APIs
+	"search":                                 http.MethodGet,
+	"autocomplete":                           http.MethodGet,
+	"searchByRadius":                         http.MethodGet,
+	"detailsByPlaceId":                       http.MethodGet,
+	"geocode":                                http.MethodGet,
+	"distanceMatrix":                         http.MethodGet, //Route APIs
+	"distanceMatrixDetails":                  http.MethodGet,
+	"pairWiseRouteSummary":                   http.MethodPost,
+	"multiSourceRouteSummary":                http.MethodPost,
+	"multiStopPoints":                        http.MethodPost,
+	"multiSourceRouteSummaryWithoutGeometry": http.MethodPost,
+	"pairwiseDistanceMatrix":                 http.MethodPost,
+	"multiStopPointDetailsWithGeometry":      http.MethodPost,
+	"snapToRoad":                             http.MethodPost,
+	"etaWithoutGeometryByMode":               http.MethodPost, //ETA APIs
+	"etaWithGeometryByMode":                  http.MethodPost,
+	"etaWithoutStoppage":                     http.MethodPost,
+	"etaMultipleStoppage":                    http.MethodPost,
+	"etaWithMultiSourceMultiStopPoint":       http.MethodPost,
+	"staticMap":                              http.MethodPost, //Static Map API
 }
 
 var token string
@@ -52,6 +63,19 @@ func performSecureRequest(label string, apiKey string, origin string, timeoutMs 
 		"Origin":       origin,
 		"fxsrf":        tokenHeader,
 		"Content-Type": "application/json",
+	}
+
+	// Traceparent is optional: a missing value is silently ignored, while an
+	// empty or invalid one is warned about and the request proceeds without
+	// the traceparent header.
+	if tp := traceparentFromJSON(jsonRequest); tp != nil {
+		if *tp == "" {
+			log.Printf("sdk warning: [%s] empty Traceparent provided; sending request without traceparent header", label)
+		} else if err := ValidateTraceparent(tp); err != nil {
+			log.Printf("sdk warning: [%s] invalid Traceparent %q (%v); sending request without traceparent header", label, *tp, err)
+		} else {
+			headers["traceparent"] = *tp
+		}
 	}
 
 	client := &http.Client{Timeout: time.Duration(timeoutMs) * time.Millisecond}
