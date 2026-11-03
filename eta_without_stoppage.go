@@ -1,0 +1,53 @@
+package sdk
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+)
+
+type ETAsRequest struct {
+	FromLat     float64
+	FromLon     float64
+	ToLat       float64
+	ToLon       float64
+	Traceparent *string
+	Modes       []Mode
+}
+
+type ETAModeData struct {
+	Distance  float64    `json:"distance"`
+	Duration  float64    `json:"duration"`
+	Geometry  string     `json:"geometry"`
+	Waypoints []Waypoint `json:"waypoints"`
+}
+
+type ETAWithoutStoppageData map[Mode]*ETAModeData
+
+type ETAsResponse struct {
+	Status  bool                   `json:"status"`
+	Message string                 `json:"message"`
+	Data    ETAWithoutStoppageData `json:"data"`
+}
+
+func (s *client) EtaWithoutStoppage(ctx context.Context, request ETAsRequest) (*ETAsResponse, error) {
+	if err := ValidateLatLon(request.FromLat, request.FromLon); err != nil {
+		return nil, err
+	}
+
+	if err := ValidateLatLon(request.ToLat, request.ToLon); err != nil {
+		return nil, err
+	}
+
+	body, err := s.request("etaWithoutStoppage", request)
+	if err != nil {
+		return nil, err
+	}
+
+	var response ETAsResponse
+	if err := json.Unmarshal(body, &response); err != nil {
+		return nil, fmt.Errorf("error unmarshaling ETAsResponse response: %w", err)
+	}
+
+	return &response, nil
+}

@@ -19,80 +19,82 @@ func buildURLFromJSON(label, jsonStr string) (string, error) {
 	}
 
 	switch label {
+	//Geo Map APIs
+
 	case "reverse":
 		lat := data["Lat"].(float64)
 		lon := data["Lon"].(float64)
-		return fmt.Sprintf("%s/geomap/api/v2/reverse?lat=%f&lon=%f", baseURL, lat, lon), nil
-	case "distanceMatrix", "distanceMatrixDetails":
+		return fmt.Sprintf("%s/geomap/api/v2/reverse?lat=%f&lon=%f%s", baseURL, lat, lon, acceptLanguageParam(data)), nil
+
+	case "search":
+		var activeLocations string
+		limit := positiveNumParam(data, "Limit", "limit", 0)
+		lat := positiveNumParam(data, "Lat", "lat", 2)
+		lon := positiveNumParam(data, "Lon", "lon", 2)
+		radius := positiveNumParam(data, "Radius", "radius", 0)
+		page := positiveNumParam(data, "Page", "page", 0)
+		if v, _ := data["ActiveLocations"].(bool); v {
+			activeLocations = "&activeLocations=true"
+		}
+		query := url.QueryEscape(data["Query"].(string))
+		return fmt.Sprintf("%s/geomap/api/v2/search?q=%s%s%s%s%s%s%s%s", baseURL, query, lat, lon, radius, page, limit, activeLocations, acceptLanguageParam(data)), nil
+
+	case "searchByRadius":
+		var activeLocations string
+		limit := positiveNumParam(data, "Limit", "limit", 0)
+		lat := positiveNumParam(data, "Lat", "lat", 2)
+		lon := positiveNumParam(data, "Lon", "lon", 2)
+		radius := positiveNumParam(data, "Radius", "radius", 0)
+		page := positiveNumParam(data, "Page", "page", 0)
+		if v, _ := data["ActiveLocations"].(bool); v {
+			activeLocations = "&activeLocations=true"
+		}
+		query := url.QueryEscape(data["Query"].(string))
+		return fmt.Sprintf("%s/geomap/api/v2/search/radius?q=%s%s%s%s%s%s%s%s", baseURL, query, lat, lon, radius, page, limit, activeLocations, acceptLanguageParam(data)), nil
+
+	case "autocomplete":
+		query := url.QueryEscape(data["Query"].(string))
+		var zoneActiveOnly string
+		limit := positiveNumParam(data, "Limit", "limit", 0)
+		lat := positiveNumParam(data, "Lat", "lat", 2)
+		lon := positiveNumParam(data, "Lon", "lon", 2)
+		if data["ActiveZone"] != nil {
+			zoneActiveOnly = "&zoneActiveOnly=" + strconv.FormatBool(data["ActiveZone"].(bool))
+		}
+		return fmt.Sprintf("%s/geomap/api/v2/autocomplete?q=%s%s%s%s%s%s", baseURL, query, zoneActiveOnly, lat, lon, limit, acceptLanguageParam(data)), nil
+
+	case "detailsByPlaceId":
+		placeID := url.QueryEscape(data["PlaceID"].(string))
+		return fmt.Sprintf("%s/geomap/api/v1/details/%s", baseURL, placeID), nil
+
+	case "geocode":
+		query := url.QueryEscape(data["Query"].(string))
+		limit := positiveNumParam(data, "Limit", "limit", 0)
+		return fmt.Sprintf("%s/geomap/api/v2/geocode?q=%s%s%s", baseURL, query, limit, acceptLanguageParam(data)), nil
+
+		// Route Map APIs
+
+	case "distanceMatrix":
 		fromLat := data["OriginLat"].(float64)
 		fromLon := data["OriginLon"].(float64)
 		toLat := data["DestLat"].(float64)
 		toLon := data["DestLon"].(float64)
 		mode := url.QueryEscape(data["Mode"].(string))
-		path := "distancematrix"
-		version := "v3"
-		if label == "distanceMatrixDetails" {
-			path = "distancematrixdetails"
-			version = "v2"
-		}
-		return fmt.Sprintf("%s/routemap/api/%s/routes/%s?fromLat=%f&fromLong=%f&toLat=%f&toLong=%f&mode=%s", baseURL, version, path, fromLat, fromLon, toLat, toLon, mode), nil
-	case "search", "searchByRadius":
-		var path string
-		var lat string
-		var lon string
-		var limit string
-		var page string
-		var activeLocations string
-		var radius string
-		if label == "searchByRadius" {
-			path = "/radius"
-		}
-		if data["Limit"] != nil && data["Limit"].(float64) > 0 {
-			limit = "&limit=" + strconv.FormatFloat(data["Limit"].(float64), 'f', 0, 64)
-		}
-		if data["Lat"] != nil && data["Lat"].(float64) > 0 {
-			lat = "&lat=" + strconv.FormatFloat(data["Lat"].(float64), 'f', 2, 64)
-		}
-		if data["Lon"] != nil && data["Lon"].(float64) > 0 {
-			lon = "&lon=" + strconv.FormatFloat(data["Lon"].(float64), 'f', 2, 64)
-		}
-		if data["Radius"] != nil && data["Radius"].(float64) > 0 {
-			radius = "&radius=" + strconv.FormatFloat(data["Radius"].(float64), 'f', 0, 64)
-		}
-		if data["Page"] != nil && data["Page"].(float64) > 0 {
-			page = "&page=" + strconv.FormatFloat(data["Page"].(float64), 'f', 0, 64)
-		}
-		if data["ActiveLocations"] != nil && data["ActiveLocations"].(bool) {
-			activeLocations = "&activeLocations=true"
-		}
-		query := url.QueryEscape(data["Query"].(string))
-		return fmt.Sprintf("%s/geomap/api/v2/search%s?q=%s%s%s%s%s%s%s", baseURL, path, query, lat, lon, radius, page, limit, activeLocations), nil
+		return fmt.Sprintf("%s/routemap/api/v3/routes/distancematrix?fromLat=%f&fromLong=%f&toLat=%f&toLong=%f&mode=%s", baseURL, fromLat, fromLon, toLat, toLon, mode), nil
+
+	case "distanceMatrixDetails":
+		fromLat := data["OriginLat"].(float64)
+		fromLon := data["OriginLon"].(float64)
+		toLat := data["DestLat"].(float64)
+		toLon := data["DestLon"].(float64)
+		mode := url.QueryEscape(data["Mode"].(string))
+		return fmt.Sprintf("%s/routemap/api/v2/routes/distancematrixdetails?fromLat=%f&fromLong=%f&toLat=%f&toLong=%f&mode=%s", baseURL, fromLat, fromLon, toLat, toLon, mode), nil
+
 	case "multiSourceRouteSummary":
 		return fmt.Sprintf("%s/routemap/api/v1/routes/multi-source-summary", baseURL), nil
+
 	case "pairWiseRouteSummary":
 		return fmt.Sprintf("%s/routemap/api/v2/routes/pairwise-summary", baseURL), nil
-	case "autocomplete":
-		query := url.QueryEscape(data["Query"].(string))
-		var lat string
-		var lon string
-		var limit string
-		var zoneActiveOnly string
-		if data["Limit"] != nil && data["Limit"].(float64) > 0 {
-			limit = "&limit=" + strconv.FormatFloat(data["Limit"].(float64), 'f', 0, 64)
-		}
-		if data["Lat"] != nil && data["Lat"].(float64) > 0 {
-			lat = "&lat=" + strconv.FormatFloat(data["Lat"].(float64), 'f', 2, 64)
-		}
-		if data["Lon"] != nil && data["Lon"].(float64) > 0 {
-			lon = "&lon=" + strconv.FormatFloat(data["Lon"].(float64), 'f', 2, 64)
-		}
-		if data["ActiveZone"] != nil {
-			zoneActiveOnly = "&zoneActiveOnly=" + strconv.FormatBool(data["ActiveZone"].(bool))
-		}
-		return fmt.Sprintf("%s/geomap/api/v2/autocomplete?q=%s%s%s%s%s", baseURL, query, zoneActiveOnly, lat, lon, limit), nil
-	case "detailsByPlaceId":
-		placeID := url.QueryEscape(data["PlaceID"].(string))
-		return fmt.Sprintf("%s/geomap/api/v1/details/%s", baseURL, placeID), nil
 
 	case "snapToRoad":
 		return fmt.Sprintf("%s/routemap/api/v1/nearest/road", baseURL), nil
@@ -100,7 +102,72 @@ func buildURLFromJSON(label, jsonStr string) (string, error) {
 	case "multiStopPoints":
 		return fmt.Sprintf("%s/routemap/api/v1/routes/multi-stoppoints", baseURL), nil
 
+	case "multiSourceRouteSummaryWithoutGeometry":
+		return fmt.Sprintf("%s/routemap/api/v1/routes/multi-source-summary-without-geometry", baseURL), nil
+
+	case "pairwiseDistanceMatrix":
+		return fmt.Sprintf("%s/routemap/api/v1/routes/pairwise-distancematrix", baseURL), nil
+
+	case "multiStopPointDetailsWithGeometry":
+		return fmt.Sprintf("%s/routemap/api/v1/routes/multi-stoppoint-details-with-geometry", baseURL), nil
+
+	// ETA APIs
+
+	case "etaWithoutGeometryByMode":
+		mode := url.QueryEscape(data["Mode"].(string))
+		routeCount := positiveNumParam(data, "NoOfRoutes", "route_count", 0)
+		return fmt.Sprintf("%s/eta/api/v1/get-eta?from_lat=%s&from_lon=%s&to_lat=%s&to_lon=%s&mode=%s%s",
+			baseURL, num(data["FromLat"]), num(data["FromLon"]), num(data["ToLat"]), num(data["ToLon"]), mode, routeCount), nil
+
+	case "etaWithGeometryByMode":
+		mode := url.QueryEscape(data["Mode"].(string))
+		var tripID string
+		if v, ok := data["TripId"].(string); ok && v != "" {
+			tripID = "&trip_id=" + url.QueryEscape(v)
+		}
+		return fmt.Sprintf("%s/eta/api/v1/get-eta/details?from_lat=%s&from_lon=%s&to_lat=%s&to_lon=%s&mode=%s%s",
+			baseURL, num(data["FromLat"]), num(data["FromLon"]), num(data["ToLat"]), num(data["ToLon"]), mode, tripID), nil
+
+	case "etaWithoutStoppage":
+		return fmt.Sprintf("%s/eta/api/v1/get-eta/details/multiple-modes?from_lat=%s&from_lon=%s&to_lat=%s&to_lon=%s",
+			baseURL, num(data["FromLat"]), num(data["FromLon"]), num(data["ToLat"]), num(data["ToLon"])), nil
+
+	case "etaMultipleStoppage":
+		return fmt.Sprintf("%s/eta/api/v1/get-eta/details/multi-stoppage", baseURL), nil
+
+	case "etaWithMultiSourceMultiStopPoint":
+		return fmt.Sprintf("%s/routemap/api/v1/routes/eta-with-multi-source-multi-stoppoint", baseURL), nil
+
+	// Static Map APIs
+
+	case "staticMap":
+		return fmt.Sprintf("%s/staticmap/api/v1/get-static-map", baseURL), nil
+
 	default:
 		return "", fmt.Errorf("unsupported label: %s", label)
 	}
+}
+
+// num formats a JSON number without trailing zeros or exponent.
+func num(v interface{}) string {
+	f, _ := v.(float64)
+	return strconv.FormatFloat(f, 'f', -1, 64)
+}
+
+// acceptLanguageParam returns "&acceptLanguage=<lang>" when the optional
+// AcceptedLanguage field is set, otherwise an empty string.
+func acceptLanguageParam(data map[string]interface{}) string {
+	if v, ok := data["AcceptedLanguage"].(string); ok && v != "" {
+		return "&acceptLanguage=" + url.QueryEscape(v)
+	}
+	return ""
+}
+
+// positiveNumParam returns "&<param>=<value>" when data[key] is a number
+// greater than 0, formatted with the given decimals, otherwise "".
+func positiveNumParam(data map[string]interface{}, key, param string, decimals int) string {
+	if v, ok := data[key].(float64); ok && v > 0 {
+		return "&" + param + "=" + strconv.FormatFloat(v, 'f', decimals, 64)
+	}
+	return ""
 }

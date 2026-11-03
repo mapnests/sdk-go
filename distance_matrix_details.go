@@ -7,12 +7,12 @@ import (
 )
 
 type DistanceMatrixDetailsRequest struct {
-	OriginLat  float64
-	OriginLon  float64
-	DestLat    float64
-	DestLon    float64
-	Mode       Mode
-	XRequestID *string
+	OriginLat   float64
+	OriginLon   float64
+	DestLat     float64
+	DestLon     float64
+	Mode        Mode
+	Traceparent *string
 }
 
 type DistanceMatrixDetailsResponse struct {

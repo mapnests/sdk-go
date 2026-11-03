@@ -7,10 +7,10 @@ import (
 )
 
 type MultiStopPointsRequest struct {
-	Src        Coordinate
-	StopPoints []StopPoint
-	Mode       Mode
-	XRequestID *string
+	Src         Coordinate
+	StopPoints  []StopPoint
+	Mode        Mode
+	Traceparent *string
 }
 
 type StopPoint struct {
